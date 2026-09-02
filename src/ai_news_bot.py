@@ -21,7 +21,7 @@ from typing import Any
 CHINA_TZ = timezone(timedelta(hours=8), name="Asia/Shanghai")
 OPENAI_API_URL = "https://api.openai.com/v1/responses"
 TELEGRAM_TEXT_LIMIT = 4096
-DEFAULT_MODEL = "gpt-5.4-mini"
+DEFAULT_MODEL = "gpt-5.6-luna"
 STATE_PATH = "state/publish-state.json"
 MAX_RETRIES = 3
 

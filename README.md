@@ -168,6 +168,5 @@ python src/ai_news_bot.py
 
 ## 可选调整
 
-- 默认模型是 `gpt-5.4-mini`。如需临时更换，可在运行环境设置 `OPENAI_MODEL`；无需改代码。
+- 默认模型是 `gpt-5.6-luna`。如需临时更换，可在运行环境设置 `OPENAI_MODEL`；无需改代码。
 - 发布时间由 `.github/workflows/publish.yml` 的 `cron` 控制。GitHub 使用 UTC，当前 `0 1 * * *` 对应中国时间每天 09:00。
-

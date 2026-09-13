@@ -84,6 +84,19 @@ class ValidationTests(unittest.TestCase):
     def test_telegram_length_counts_emoji_as_two_units(self):
         self.assertEqual(bot.utf16_length("🔥a"), 3)
 
+    def test_accepts_article_path_variant_from_a_searched_host(self):
+        digest = sample_digest()
+        searched = {bot.canonical_url(item["source_url"]) for item in digest["items"]}
+        searched.remove("https://example.com/news/1")
+        searched.add("https://example.com/search-result/1")
+        bot.validate_digest(digest, NOW, searched_urls=searched)
+
+    def test_rejects_source_from_an_unsearched_host(self):
+        digest = sample_digest()
+        searched = {"https://different.example/news/1"}
+        with self.assertRaisesRegex(bot.AppError, "来源站点不在本次网页搜索结果"):
+            bot.validate_digest(digest, NOW, searched_urls=searched)
+
 
 class ResponseTests(unittest.TestCase):
     def test_extract_output_text(self):

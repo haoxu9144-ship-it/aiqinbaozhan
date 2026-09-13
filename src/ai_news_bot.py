@@ -24,6 +24,7 @@ TELEGRAM_TEXT_LIMIT = 4096
 DEFAULT_MODEL = "gpt-5.6-luna"
 STATE_PATH = "state/publish-state.json"
 MAX_RETRIES = 3
+MAX_GENERATION_ATTEMPTS = 2
 
 
 def configure_stdio() -> None:
@@ -230,10 +231,37 @@ def extract_remote_error(text: str) -> str:
 
 
 def generate_digest(config: RuntimeConfig, now: datetime) -> dict[str, Any]:
+    previous_count: int | None = None
+    for attempt in range(1, MAX_GENERATION_ATTEMPTS + 1):
+        prompt = build_prompt(now)
+        if previous_count is not None:
+            prompt += f"""
+
+这是第 {attempt} 次独立检索。上一次严格筛选后只有 {previous_count} 条合格新闻。
+请重新覆盖所有指定主题，重点检查公司官方 newsroom、产品博客、更新日志、政府文件和可靠商业媒体，
+寻找可能遗漏的同一 24 小时窗口内事件。不得放宽时间、可信度或重要性标准，也不得为凑数而编造。
+""".rstrip()
+
+        response = request_digest_response(config, prompt)
+        digest, searched_urls = parse_digest_response(response)
+        try:
+            validate_digest(digest, now, searched_urls=searched_urls)
+        except AppError as exc:
+            count = digest_item_count(digest)
+            if count is not None and count < 4 and attempt < MAX_GENERATION_ATTEMPTS:
+                previous_count = count
+                print(f"首次严格筛选仅得到 {count} 条；正在扩大主题覆盖并重新检索一次。")
+                continue
+            raise
+        return digest
+    raise AppError("内容生成重试结束，但仍没有得到 4～6 条合格新闻。")
+
+
+def request_digest_response(config: RuntimeConfig, prompt: str) -> dict[str, Any]:
     payload = {
         "model": config.model,
         "instructions": "严格执行事实核查、时间窗口和 JSON 输出要求。",
-        "input": build_prompt(now),
+        "input": prompt,
         "tools": [
             {
                 "type": "web_search_preview",
@@ -265,6 +293,10 @@ def generate_digest(config: RuntimeConfig, now: datetime) -> dict[str, Any]:
         headers={"Authorization": f"Bearer {config.openai_api_key}"},
         body=payload,
     )
+    return response
+
+
+def parse_digest_response(response: dict[str, Any]) -> tuple[dict[str, Any], set[str]]:
     if response.get("status") != "completed":
         detail = response.get("error") or response.get("incomplete_details") or response.get("status")
         raise AppError(f"OpenAI 内容生成未完成：{detail}")
@@ -281,8 +313,14 @@ def generate_digest(config: RuntimeConfig, now: datetime) -> dict[str, Any]:
     searched_urls = extract_search_source_urls(response)
     if not searched_urls:
         raise AppError("网页搜索没有返回可核验的来源 URL；为避免无来源内容，停止发布。")
-    validate_digest(digest, now, searched_urls=searched_urls)
-    return digest
+    return digest, searched_urls
+
+
+def digest_item_count(digest: Any) -> int | None:
+    if not isinstance(digest, dict):
+        return None
+    items = digest.get("items")
+    return len(items) if isinstance(items, list) else None
 
 
 def extract_output_text(response: dict[str, Any]) -> str:

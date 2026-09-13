@@ -134,6 +134,42 @@ class ResponseTests(unittest.TestCase):
             self.assertEqual(bot.publish_to_telegram("token", "@channel", "post"), 7)
             self.assertEqual(request.call_args.kwargs["retries"], 1)
 
+    def test_generation_retries_once_when_too_few_items(self):
+        config = bot.RuntimeConfig("key", "", "", True, "model", "", "")
+
+        def response_for(count):
+            digest = sample_digest(count)
+            return {
+                "status": "completed",
+                "output": [
+                    {
+                        "type": "web_search_call",
+                        "action": {
+                            "sources": [
+                                {"type": "url", "url": item["source_url"]}
+                                for item in digest["items"]
+                            ]
+                        },
+                    },
+                    {
+                        "type": "message",
+                        "content": [{"type": "output_text", "text": json.dumps(digest)}],
+                    },
+                ],
+            }
+
+        with patch.object(
+            bot,
+            "request_json",
+            side_effect=[response_for(3), response_for(4)],
+        ) as request:
+            digest = bot.generate_digest(config, NOW)
+
+        self.assertEqual(len(digest["items"]), 4)
+        self.assertEqual(request.call_count, 2)
+        second_prompt = request.call_args_list[1].kwargs["body"]["input"]
+        self.assertIn("上一次严格筛选后只有 3 条", second_prompt)
+
 
 class FlowTests(unittest.TestCase):
     def test_dry_run_never_sends_or_touches_state(self):

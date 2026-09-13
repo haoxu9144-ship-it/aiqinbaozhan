@@ -125,6 +125,18 @@ class ResponseTests(unittest.TestCase):
             {"https://example.com/news/1"},
         )
 
+    def test_canonical_url_ignores_www_and_article_tracking_query(self):
+        self.assertEqual(
+            bot.canonical_url("https://www.Example.com/news/1/?utm_source=openai#section"),
+            "https://example.com/news/1",
+        )
+
+    def test_canonical_url_keeps_query_for_query_only_article_urls(self):
+        self.assertEqual(
+            bot.canonical_url("https://example.com/?id=123#section"),
+            "https://example.com/?id=123",
+        )
+
     def test_telegram_send_is_never_automatically_retried(self):
         with patch.object(
             bot,

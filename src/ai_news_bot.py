@@ -341,9 +341,15 @@ def extract_output_text(response: dict[str, Any]) -> str:
 def canonical_url(value: str) -> str:
     parsed = urllib.parse.urlsplit(value.strip())
     host = (parsed.hostname or "").lower()
+    if host.startswith("www."):
+        host = host[4:]
     port = f":{parsed.port}" if parsed.port else ""
     path = parsed.path.rstrip("/") or "/"
-    return urllib.parse.urlunsplit((parsed.scheme.lower(), host + port, path, parsed.query, ""))
+    # Search providers and publishers commonly add or remove tracking query
+    # parameters. Article URLs are identified by host + path; root/query-only
+    # URLs keep their query because it may contain the actual article id.
+    query = parsed.query if path == "/" else ""
+    return urllib.parse.urlunsplit((parsed.scheme.lower(), host + port, path, query, ""))
 
 
 def extract_search_source_urls(response: dict[str, Any]) -> set[str]:

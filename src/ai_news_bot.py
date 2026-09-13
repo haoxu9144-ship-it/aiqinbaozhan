@@ -352,6 +352,11 @@ def canonical_url(value: str) -> str:
     return urllib.parse.urlunsplit((parsed.scheme.lower(), host + port, path, query, ""))
 
 
+def canonical_host(value: str) -> str:
+    host = (urllib.parse.urlsplit(value.strip()).hostname or "").lower()
+    return host[4:] if host.startswith("www.") else host
+
+
 def extract_search_source_urls(response: dict[str, Any]) -> set[str]:
     urls: set[str] = set()
     for item in response.get("output", []):
@@ -395,6 +400,7 @@ def validate_digest(
         raise AppError(f"严格筛选后得到 {actual} 条新闻，不满足 4～6 条要求，停止发布。")
     window_start = now - timedelta(hours=24)
     seen_urls: set[str] = set()
+    searched_hosts = {canonical_host(url) for url in searched_urls or set()}
     required_text_fields = ("headline", "what_happened", "why_important", "source_name")
     for index, item in enumerate(items, start=1):
         if not isinstance(item, dict):
@@ -416,8 +422,11 @@ def validate_digest(
         if normalized_url in seen_urls:
             raise AppError(f"第 {index} 条新闻与其他条目使用了重复来源 URL。")
         seen_urls.add(normalized_url)
-        if searched_urls is not None and canonical_url(source_url) not in searched_urls:
-            raise AppError(f"第 {index} 条新闻的来源 URL 不在本次网页搜索结果中，停止发布。")
+        if searched_urls is not None:
+            exact_match = canonical_url(source_url) in searched_urls
+            host_match = canonical_host(source_url) in searched_hosts
+            if not exact_match and not host_match:
+                raise AppError(f"第 {index} 条新闻的来源站点不在本次网页搜索结果中，停止发布。")
     watch = digest.get("watch")
     if not isinstance(watch, dict) or not all(
         isinstance(watch.get(field), str) and watch[field].strip() for field in ("thing", "reason")

@@ -1,6 +1,8 @@
 {
   "date": "2026-09-15",
-  "status": "sending",
+  "status": "published",
   "claimed_at": "2026-09-15T01:11:09+00:00",
-  "content_sha256": "843c313431d241d20ea138c43849903b961fff09ee6d90088bca5c32a088ff72"
+  "content_sha256": "843c313431d241d20ea138c43849903b961fff09ee6d90088bca5c32a088ff72",
+  "published_at": "2026-09-15T01:11:32+00:00",
+  "telegram_message_id": 5
 }

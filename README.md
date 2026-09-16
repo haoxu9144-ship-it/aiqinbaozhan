@@ -1,16 +1,17 @@
 # AI 情报站 Telegram 自动发布器
 
-每天中国时间上午 9:00，通过 OpenAI Responses API 的网页搜索筛选过去 24 小时的重要 AI 新闻，生成一篇中文简报，并用 Telegram Bot API 一次性发送到频道 `@aiqinbaozhan`。
+每天中国时间上午 9:00，通过 OpenAI Responses API 搜索过去 24 小时的国内和全球 AI 新闻，向 `@aiqinbaozhan` 先发精简主帖，再以回复主帖的方式发送排版完整的深度 PDF。两个版本来自同一份新闻数据。
 
 ## 它会做什么
 
-- 每天发布 4～6 条经过时间和来源检查的 AI 新闻。
-- 每条包含“发生了什么”“为什么重要”和来源链接。
-- 最后给出“今日值得关注的一件事”。
+- 深度数据精选4～8个不同事件，必须覆盖国内与全球；主帖只选2～5条最重要信息。
+- 主帖包含“⚡ 今天一句话”、国内AI、全球AI、创业机会栏目及“📌 今天只记住这 3 件事”；每条只保留标题和一句结论，总长度不超过1100 UTF-16字符，不靠截断缩短。
+- PDF包含背景、事件、关键更新、重要性、中国用户影响、商业机会、关注判断，以及可点击的可靠来源链接；分析与事实明确区分。
+- PDF设封面、阅读导航、国内AI、全球AI、创业/商业机会、AI工具、今日结论、新闻来源，嵌入中文字体并自动分页。
 - 使用自己的中文表达，不照抄新闻原文。
 - 严格限定过去 24 小时；首次不足 4 条时会扩大主题覆盖并重新检索一次，但不会放宽事实标准。重试后仍不足、时间不符、URL 无效或帖子超过 Telegram 4096 字限制时直接失败，不发布低质量内容。
 - 默认 `DRY_RUN=true`，只在 Actions 日志预览，不发送消息。
-- 用中国日期做防重；真实发布前先在仓库写入 `sending` 占位，再调用 Telegram，避免重跑造成当天重复发送。
+- 生成PDF成功后才开始发送。用中国日期与分阶段状态防重；主帖成功、PDF明确被拒绝时，可重跑只补PDF，不重新发送主帖。
 
 ## 项目结构
 
@@ -18,6 +19,9 @@
 .
 ├─ .github/workflows/publish.yml  # 定时与手动工作流
 ├─ src/ai_news_bot.py             # 生成、校验、去重与发布
+├─ src/deep_report.py             # 共享内容规则、精简排版、中文PDF
+├─ requirements.txt              # ReportLab PDF依赖
+├─ scripts/preview_layout.py      # 不调用API的合成版式测试
 ├─ tests/test_ai_news_bot.py      # 离线单元测试
 └─ state/publish-state.json       # 当天发送状态（不含密钥）
 ```
@@ -79,7 +83,7 @@ git push -u origin main
 3. 点击 **Run workflow**。
 4. `dry_run` 保持为 `true`，再次点击绿色 **Run workflow**。
 5. 打开本次运行，展开 **生成并按配置发布**。
-6. 日志应显示一篇完整帖子，并出现：`DRY_RUN=true：仅输出预览`。
+6. 日志显示精简主帖和 `DRY_RUN=true`；回到该次运行的汇总页，在 **Artifacts** 下载 `aiqinbaozhan-deep-report-运行编号`，解压检查PDF。
 7. 确认频道没有收到消息。DRY_RUN 不调用 Telegram，也不修改防重状态。
 
 如果失败，日志只会输出经过脱敏的错误，不会输出请求头或密钥。常见原因是 OpenAI API 账户未启用计费、模型无权限、搜索暂时失败，或严格筛选后不足 4 条合格新闻。
@@ -99,9 +103,9 @@ GitHub 的 cron 任务有时会因平台排队晚几分钟启动，但 cron 配�
 1. 打开 **Actions → 发布每日 AI 情报 → Run workflow**。
 2. 把 `dry_run` 选为 `false`。
 3. 点击 **Run workflow**。
-4. 成功后日志会显示 Telegram 的 `message_id`，`state/publish-state.json` 会被工作流自动提交为当天的 `published` 状态。
+4. 频道应先收到精简主帖，再收到回复关联的当日深度PDF；日志显示主帖ID和PDF ID。状态文件最终为 `published`。
 
-同一中国日期再次用 `false` 运行时，程序会在生成内容之前跳过，既不重复调用 OpenAI，也不重复发送 Telegram。
+当天 `published` 状态再次运行会跳过；`main_sent` 状态只使用已保存的数据补发PDF，不调用OpenAI、不重发主帖。
 
 > 手动运行表单中的 `dry_run` 会覆盖仓库变量 `DRY_RUN`；定时运行使用仓库变量。
 
@@ -110,17 +114,20 @@ GitHub 的 cron 任务有时会因平台排队晚几分钟启动，但 cron 配�
 真实发布采用“先占位、后发送”策略：
 
 1. GitHub Actions 的 `concurrency` 保证同一时间只有一个发布任务执行。
-2. 发布前把当天状态提交为 `sending`。
-3. Telegram 返回明确成功和 `message_id` 后，再把状态改成 `published`。
-4. 当天状态为 `sending` 或 `published` 时，后续运行都跳过。
+2. 完成主帖与PDF生成后，提交 `sending_main`（含当日新闻数据）。
+3. 主帖成功后提交 `main_sent`，保存 `telegram_message_id`；发PDF前提交 `sending_document`。
+4. PDF成功后提交 `published`，保存两个消息ID和内容哈希。
+5. PDF明确返回4xx拒绝时恢复为 `main_sent`，本次Actions失败；修复权限等问题后，当天手动重跑只补同一份PDF。
+6. 网络超时、5xx或成功响应缺少ID属于未知结果，保留占位并报错，不自动重发。旧版 `sending` 与 `published` 状态继续兼容。
 
 这样即使 Telegram 已收到消息、但工作流在保存最终状态前断开，也不会重复发送。代价是：如果 Telegram 请求结果不明确，程序宁可停止当天自动重试，也不冒险重复发帖。
 
-遇到 `sending` 状态的恢复方法：
+未知发送结果的恢复方法（不要盲目清空状态）：
 
 1. 先人工检查频道当天是否已经有帖子。
-2. 如果已经发布，不要重跑；可以把状态文件中的 `status` 手动改为 `published`。
-3. 如果确认频道没有帖子，才可把 `state/publish-state.json` 恢复为：
+2. 主帖与PDF都已收到：只把 `status` 标记为 `published`，尽量补齐对应消息ID，不重跑发送。
+3. 主帖已收到、PDF确定没有：保留原来的 `digest`、`generated_at`、`channel`、`date`，填写/核实主帖的 `telegram_message_id`，只把状态改为 `main_sent`；同一天重跑只补PDF。主帖的频道链接末尾数字通常就是消息ID。
+4. 只有确认当天连主帖也没有发送，且没有仍在运行的任务，才可恢复为：
 
 ```json
 {
@@ -129,7 +136,9 @@ GitHub 的 cron 任务有时会因平台排队晚几分钟启动，但 cron 配�
 }
 ```
 
-4. 提交修改后，再手动运行一次 `dry_run=false`。
+5. 提交修改后，再手动运行一次 `dry_run=false`。跨日期不自动补历史文档；可从原运行Artifacts取回PDF人工关联发布。禁止把有主帖的状态清空，否则会导致主帖重复。
+
+状态保存失败时，最后一次发送占位仍会阻止重复。Telegram与GitHub不能组成原子事务，无法保证网络异常下恰好一次，因此采用保守的“未知结果不重发”策略。
 
 ## 安全设计
 
@@ -142,7 +151,11 @@ GitHub 的 cron 任务有时会因平台排队晚几分钟启动，但 cron 配�
 
 ## 本地运行（可选）
 
-需要 Python 3.11 或更高版本。项目只使用 Python 标准库，无需安装第三方依赖。
+需要 Python 3.11 或更高版本，先执行 `python -m pip install -r requirements.txt`。Linux安装 `fonts-wqy-zenhei`；Windows默认使用黑体。可用 `AI_PDF_FONT_PATH` 指定支持TrueType的中文TTF/TTC字体路径。字体缺失会失败，不先发主帖。
+
+仅检查排版（合成测试内容，不是真实新闻，不会发布）：`python scripts/preview_layout.py`，输出至 `output/pdf/aiqinbaozhan-layout-preview.pdf`。
+
+本次升级不需要新增Secrets或更换频道变量。Actions自动安装PDF依赖和字体。生成的PDF保存为运行Artifact30天；仓库状态只保存公开新闻数据，不保存密钥。来源URL与时间检查是技术护栏，不是对每项事实的独立人工核验，仍应通过DRY_RUN抽查。
 
 运行测试：
 

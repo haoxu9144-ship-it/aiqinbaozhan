@@ -1,10 +1,10 @@
 [project]
 name = "aiqinbaozhan"
-version = "1.0.0"
+version = "1.1.0"
 description = "每天自动生成并发布中文 AI 情报到 Telegram"
 requires-python = ">=3.11"
+dependencies = ["reportlab>=4.4,<5"]
 
 [tool.ruff]
 line-length = 100
 target-version = "py311"
-

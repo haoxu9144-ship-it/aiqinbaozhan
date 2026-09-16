@@ -9,3 +9,5 @@ venv/
 post.txt
 /outputs/
 /work/
+/output/
+/tmp/

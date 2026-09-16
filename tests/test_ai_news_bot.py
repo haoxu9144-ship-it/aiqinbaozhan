@@ -2,6 +2,7 @@ import importlib.util
 import json
 import sys
 import unittest
+import tempfile
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from unittest.mock import patch
@@ -23,6 +24,15 @@ def sample_digest(count=4):
         "items": [
             {
                 "headline": f"可信 AI 新闻 {index}",
+                "region": "domestic" if index % 2 else "global",
+                "category": "business" if index == 3 else "tool" if index == 4 else "news",
+                "in_brief": index <= 4,
+                "takeaway": "合成版式测试结论，不代表真实事件。",
+                "background": "这是离线测试样例，用于检查中文排版，不是真实新闻。",
+                "china_impact": "测试中国用户影响段落：实际可用范围应以官方说明为准。",
+                "entrepreneur_impact": "测试商业分析段落：应先验证客户需求，不承诺收益。",
+                "attention_reason": "测试关注判断：核验真实来源后才可以公开发布。",
+                "key_updates": [],
                 "what_happened": "某公司发布了经过来源确认的重要更新。",
                 "why_important": "这会影响模型能力、开发者成本或行业竞争格局。",
                 "published_at": (NOW - timedelta(hours=index)).isoformat(),
@@ -32,6 +42,8 @@ def sample_digest(count=4):
             for index in range(1, count + 1)
         ],
         "watch": {"thing": "关注更新的实际可用范围", "reason": "官方后续文档会决定其真实影响。"},
+        "trend": "版式测试：此处展示当天一句话趋势，不是真实新闻。",
+        "takeaways": ["测试结论一：事实需要来源。", "测试结论二：分析要说明限制。", "测试结论三：不要承诺收益。"],
     }
 
 
@@ -55,12 +67,13 @@ class ValidationTests(unittest.TestCase):
         bot.validate_digest(digest, NOW)
         post = bot.format_post(digest, NOW)
         self.assertTrue(post.startswith("🔥 今日 AI 情报｜2026年9月2日"))
-        self.assertIn("发生了什么：", post)
-        self.assertIn("为什么重要：", post)
+        self.assertIn("⚡ 今天一句话", post)
+        self.assertIn("📌 今天只记住这 3 件事", post)
+        self.assertNotIn("发生了什么：", post)
         self.assertLessEqual(bot.utf16_length(post), 4096)
 
     def test_rejects_less_than_four_items(self):
-        with self.assertRaisesRegex(bot.AppError, "不满足 4～6 条"):
+        with self.assertRaisesRegex(bot.AppError, "不满足 4～8 条"):
             bot.validate_digest(sample_digest(3), NOW)
 
     def test_rejects_old_news(self):
@@ -197,6 +210,14 @@ class ResponseTests(unittest.TestCase):
 
 
 class FlowTests(unittest.TestCase):
+    def setUp(self):
+        temp = tempfile.TemporaryDirectory()
+        self.addCleanup(temp.cleanup)
+        original = bot.build_pdf
+        pdf = patch.object(bot, "build_pdf", side_effect=lambda digest, local, path: original(digest, local, Path(temp.name) / "test.pdf", demo=True))
+        pdf.start()
+        self.addCleanup(pdf.stop)
+
     def test_dry_run_never_sends_or_touches_state(self):
         config = bot.RuntimeConfig("key", "", "", True, "model", "", "")
         with (
@@ -223,7 +244,7 @@ class FlowTests(unittest.TestCase):
         config = bot.RuntimeConfig("key", "token", "@channel", False, "model", "gh", "owner/repo")
         fake_store = unittest.mock.Mock()
         fake_store.read.return_value = ({"date": None, "status": "never_published"}, "old-sha")
-        fake_store.write.side_effect = ["claim-sha", "done-sha"]
+        fake_store.write.side_effect = ["claim-sha", "main-sha", "upload-sha", "done-sha"]
         events = []
 
         def record_send(*_args):
@@ -235,12 +256,96 @@ class FlowTests(unittest.TestCase):
             patch.object(bot, "GitHubStateStore", return_value=fake_store),
             patch.object(bot, "generate_digest", return_value=sample_digest()),
             patch.object(bot, "publish_to_telegram", side_effect=record_send),
+            patch.object(bot, "publish_document", return_value=124),
         ):
             self.assertEqual(bot.run(config, NOW), 0)
         self.assertEqual(events, ["send"])
-        self.assertEqual(fake_store.write.call_count, 2)
-        self.assertEqual(fake_store.write.call_args_list[0].args[0]["status"], "sending")
-        self.assertEqual(fake_store.write.call_args_list[1].args[0]["status"], "published")
+        self.assertEqual(fake_store.write.call_count, 4)
+        self.assertEqual(fake_store.write.call_args_list[0].args[0]["status"], "sending_main")
+        self.assertEqual(fake_store.write.call_args_list[3].args[0]["status"], "published")
+
+    def test_resume_sends_only_pdf_without_generating_again(self):
+        config = bot.RuntimeConfig("key", "token", "@channel", False, "model", "gh", "owner/repo")
+        store = unittest.mock.Mock()
+        store.read.return_value = ({"date": "2026-09-02", "status": "main_sent", "digest": sample_digest(),
+                                   "generated_at": NOW.isoformat(), "telegram_message_id": 123, "channel": "@channel"}, "sha")
+        store.write.return_value = "new-sha"
+        with patch.object(bot, "GitHubStateStore", return_value=store), patch.object(bot, "generate_digest") as generate, patch.object(bot, "publish_to_telegram") as main, patch.object(bot, "publish_document", return_value=124) as pdf:
+            self.assertEqual(bot.run(config, NOW), 0)
+            generate.assert_not_called()
+            main.assert_not_called()
+            self.assertEqual(pdf.call_args.args[3], 123)
+
+    def test_unknown_pdf_upload_blocks_retries(self):
+        config = bot.RuntimeConfig("key", "token", "@channel", False, "model", "gh", "owner/repo")
+        store = unittest.mock.Mock()
+        store.read.return_value = ({"date": "2026-09-02", "status": "sending_document"}, "sha")
+        with patch.object(bot, "GitHubStateStore", return_value=store), patch.object(bot, "generate_digest") as generate:
+            with self.assertRaisesRegex(bot.AppError, "发送结果未知"):
+                bot.run(config, NOW)
+            generate.assert_not_called()
+
+    def test_pdf_failure_prevents_main_send(self):
+        config = bot.RuntimeConfig("key", "token", "@channel", False, "model", "gh", "owner/repo")
+        store = unittest.mock.Mock()
+        store.read.return_value = ({"date": None}, "sha")
+        with patch.object(bot, "GitHubStateStore", return_value=store), patch.object(bot, "generate_digest", return_value=sample_digest()), patch.object(bot, "build_pdf", side_effect=ValueError("字体缺失")), patch.object(bot, "publish_to_telegram") as main:
+            with self.assertRaisesRegex(bot.AppError, "PDF生成失败"):
+                bot.run(config, NOW)
+            main.assert_not_called()
+            store.write.assert_not_called()
+
+    def test_explicit_pdf_rejection_retains_main_sent(self):
+        config = bot.RuntimeConfig("key", "token", "@channel", False, "model", "gh", "owner/repo")
+        store = unittest.mock.Mock()
+        store.read.return_value = ({"date": None}, "sha")
+        store.write.return_value = "new-sha"
+        with patch.object(bot, "GitHubStateStore", return_value=store), patch.object(bot, "generate_digest", return_value=sample_digest()), patch.object(bot, "publish_to_telegram", return_value=123), patch.object(bot, "publish_document", side_effect=bot.TelegramRejectedError("权限不足")):
+            with self.assertRaisesRegex(bot.AppError, "权限不足"):
+                bot.run(config, NOW)
+        self.assertEqual(store.write.call_args.args[0]["status"], "main_sent")
+        self.assertEqual(store.write.call_args.args[0]["telegram_message_id"], 123)
+
+    def test_pdf_timeout_keeps_unknown_upload_claim(self):
+        config = bot.RuntimeConfig("key", "token", "@channel", False, "model", "gh", "owner/repo")
+        store = unittest.mock.Mock()
+        store.read.return_value = ({"date": None}, "sha")
+        store.write.return_value = "new-sha"
+        with patch.object(bot, "GitHubStateStore", return_value=store), patch.object(bot, "generate_digest", return_value=sample_digest()), patch.object(bot, "publish_to_telegram", return_value=123), patch.object(bot, "publish_document", side_effect=bot.AppError("网络异常")):
+            with self.assertRaisesRegex(bot.AppError, "网络异常"):
+                bot.run(config, NOW)
+        self.assertEqual(store.write.call_args.args[0]["status"], "sending_document")
+
+    def test_failed_main_send_never_sends_document(self):
+        config = bot.RuntimeConfig("key", "token", "@channel", False, "model", "gh", "owner/repo")
+        store = unittest.mock.Mock()
+        store.read.return_value = ({"date": None}, "sha")
+        store.write.return_value = "new-sha"
+        with patch.object(bot, "GitHubStateStore", return_value=store), patch.object(bot, "generate_digest", return_value=sample_digest()), patch.object(bot, "publish_to_telegram", side_effect=bot.AppError("结果未知")), patch.object(bot, "publish_document") as pdf:
+            with self.assertRaisesRegex(bot.AppError, "结果未知"):
+                bot.run(config, NOW)
+            pdf.assert_not_called()
+        self.assertEqual(store.write.call_args.args[0]["status"], "sending_main")
+
+
+class EditorialTests(unittest.TestCase):
+    def test_missing_domestic_news_rejected(self):
+        digest = sample_digest()
+        for item in digest["items"]:
+            item["region"] = "global"
+        with self.assertRaisesRegex(bot.AppError, "缺少合格国内"):
+            bot.validate_digest(digest, NOW)
+
+    def test_long_conclusion_rejected_not_truncated(self):
+        digest = sample_digest()
+        digest["items"][0]["takeaway"] = "长" * 59
+        with self.assertRaisesRegex(bot.AppError, "过长"):
+            bot.validate_digest(digest, NOW)
+
+    def test_schema_contains_deep_fields(self):
+        schema = bot.json_schema()
+        self.assertIn("trend", schema["required"])
+        self.assertIn("china_impact", schema["properties"]["items"]["items"]["required"])
 
 
 class RedactionTests(unittest.TestCase):

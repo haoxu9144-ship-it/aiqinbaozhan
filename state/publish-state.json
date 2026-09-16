@@ -1,6 +1,6 @@
 {
   "date": "2026-09-16",
-  "status": "sending_main",
+  "status": "main_sent",
   "claimed_at": "2026-09-16T11:29:16+00:00",
   "content_sha256": "2d9df78620ffb7efdd041a976ea2661b9911717acdeed7fe563eb904a2b488ff",
   "generated_at": "2026-09-16T11:28:33+00:00",
@@ -102,5 +102,6 @@
       "中国官方治理重点转向智能体和重点行业应用安全。"
     ]
   },
-  "channel": "@aiqinbaozhan"
+  "channel": "@aiqinbaozhan",
+  "telegram_message_id": 7
 }

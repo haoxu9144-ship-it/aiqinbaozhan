@@ -1,6 +1,6 @@
 {
   "date": "2026-09-16",
-  "status": "sending_document",
+  "status": "published",
   "claimed_at": "2026-09-16T11:29:16+00:00",
   "content_sha256": "2d9df78620ffb7efdd041a976ea2661b9911717acdeed7fe563eb904a2b488ff",
   "generated_at": "2026-09-16T11:28:33+00:00",
@@ -103,5 +103,8 @@
     ]
   },
   "channel": "@aiqinbaozhan",
-  "telegram_message_id": 7
+  "telegram_message_id": 7,
+  "published_at": "2026-09-16T11:29:22+00:00",
+  "telegram_document_message_id": 8,
+  "pdf_sha256": "2a97705dfcc7a6e93fb85e9cfc89d5bffaa3a94fa38dcedec0cd816dedaf5ed3"
 }

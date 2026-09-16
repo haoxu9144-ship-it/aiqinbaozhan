@@ -22,7 +22,8 @@ def enrich_schema(schema):
     item["required"] = list(item["properties"])
     schema["properties"]["trend"] = {"type": "string"}
     schema["properties"]["takeaways"] = {"type": "array", "items": {"type": "string"}}
-    schema["required"] += ["trend", "takeaways"]
+    schema["properties"]["editorial_comment"] = {"type": "string"}
+    schema["required"] += ["trend", "takeaways", "editorial_comment"]
     return schema
 
 
@@ -36,6 +37,14 @@ def editorial_prompt():
 region为domestic/global；category为news/business/tool。只有2-5个最重要条目标记in_brief=true，
 精简版必须也同时覆盖国内与全球。headline不超过26字，takeaway不超过58字：一句具体结论，保留实体名称。
 trend不超过65字，概括当天真实趋势；takeaways恰好3句、每句不超过42字，必须源自所选新闻。
+editorial_comment是整篇精简帖唯一一句“情报站锐评”，不是每条新闻的点评。
+优先针对当天所选新闻中最重要、最有讨论价值的事件，或这些真实新闻体现的整体AI趋势。
+用自己的中文写15-45字，含标点最多60字；只返回单行正文，不带栏目名、表情或列表。
+像懂AI与商业的人随口点评：有一点幽默、调侃和轻微犀利，看似玩笑但有实际道理。
+避免正式新闻稿腔、强行冷笑话、空泛口号、低俗、攻击具体个人与夸张标题党。
+不能为了笑点新增未经来源核实的事实、数据、传闻或断言；观察与推论不要冒充新闻事实。
+如果当天新闻涉及严肃或敏感事件、不适合调侃，就写克制的犀利观察，不硬搞笑。
+每天依据当天真实新闻重新创作，不套用固定段子，也不要复制用户的风格示例。
 每条background交代完整背景；what_happened说明具体事件；key_updates列有来源的具体更新和数据，
 没有可靠数字就返回空数组，不凭空计算。why_important说明重要性。
 china_impact分析中国用户的可用性、成本、语言或合规影响，未知则明确说尚未确认；
@@ -71,6 +80,13 @@ def validate_editorial(digest):
     takeaways = digest.get("takeaways")
     if not isinstance(takeaways, list) or len(takeaways) != 3 or any(not isinstance(v, str) or not 1 <= len(v.strip()) <= 42 or "\n" in v for v in takeaways):
         raise ValueError("今天只记住这3件事须为3条简短结论。")
+    # New generations require this field in the schema; legacy PDF-resume bundles may omit it.
+    if "editorial_comment" in digest:
+        comment = digest["editorial_comment"]
+        if (not isinstance(comment, str) or not 15 <= len(comment.strip()) <= 60
+                or any(c in comment for c in ("\n", "\r", "\u2028", "\u2029"))
+                or "情报站锐评" in comment):
+            raise ValueError("情报站锐评须为15-60字的单行正文，不重复栏目名。")
 
 
 def brief_post(digest, local):
@@ -84,6 +100,8 @@ def brief_post(digest, local):
             lines.append(title)
             for i in selected:
                 lines += ["• " + i["headline"], i["takeaway"], ""]
+    if "editorial_comment" in digest:
+        lines += ["😏 情报站锐评", digest["editorial_comment"].strip(), ""]
     lines += ["📌 今天只记住这 3 件事"]
     lines += [f"{n}. {v}" for n, v in enumerate(digest["takeaways"], 1)]
     lines += ["", "📎 当日深度 PDF 随后附上：背景、影响、机会与来源。"]

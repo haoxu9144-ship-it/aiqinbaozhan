@@ -43,6 +43,7 @@ def sample_digest(count=4):
         ],
         "watch": {"thing": "关注更新的实际可用范围", "reason": "官方后续文档会决定其真实影响。"},
         "trend": "版式测试：此处展示当天一句话趋势，不是真实新闻。",
+        "editorial_comment": "版式测试：摘要可以省字，核验事实可不能省步骤。",
         "takeaways": ["测试结论一：事实需要来源。", "测试结论二：分析要说明限制。", "测试结论三：不要承诺收益。"],
     }
 
@@ -62,6 +63,44 @@ class ConfigTests(unittest.TestCase):
 
 
 class ValidationTests(unittest.TestCase):
+    def test_editorial_comment_appears_once_before_takeaways(self):
+        digest = sample_digest()
+        bot.validate_digest(digest, NOW)
+        post = bot.format_post(digest, NOW)
+        self.assertEqual(post.count("😏 情报站锐评"), 1)
+        self.assertEqual(post.count(digest["editorial_comment"]), 1)
+        self.assertLess(post.index("💡 赚钱 / 创业机会"), post.index("😏 情报站锐评"))
+        self.assertLess(post.index("😏 情报站锐评"), post.index("📌 今天只记住这 3 件事"))
+        self.assertLessEqual(bot.utf16_length(post), 1100)
+
+    def test_editorial_comment_length_boundaries(self):
+        for length in (15, 45, 60):
+            with self.subTest(length=length):
+                digest = sample_digest()
+                digest["editorial_comment"] = "测" * length
+                bot.validate_digest(digest, NOW)
+        for length in (0, 14, 61):
+            with self.subTest(length=length):
+                digest = sample_digest()
+                digest["editorial_comment"] = "测" * length
+                with self.assertRaisesRegex(bot.AppError, "情报站锐评"):
+                    bot.validate_digest(digest, NOW)
+
+    def test_editorial_comment_rejects_multiple_lines_or_invalid_structure(self):
+        for comment in (None, ["测试观察"], "测" * 15 + "\n", "测" * 15 + "\r",
+                        "测" * 15 + "\u2028", "情报站锐评：" + "测" * 15):
+            with self.subTest(comment=comment):
+                digest = sample_digest()
+                digest["editorial_comment"] = comment
+                with self.assertRaisesRegex(bot.AppError, "情报站锐评"):
+                    bot.validate_digest(digest, NOW)
+
+    def test_legacy_digest_remains_compatible_without_canned_comment(self):
+        digest = sample_digest()
+        del digest["editorial_comment"]
+        bot.validate_digest(digest, NOW)
+        self.assertNotIn("情报站锐评", bot.format_post(digest, NOW))
+
     def test_valid_digest_and_title(self):
         digest = sample_digest()
         bot.validate_digest(digest, NOW)
@@ -345,6 +384,9 @@ class EditorialTests(unittest.TestCase):
     def test_schema_contains_deep_fields(self):
         schema = bot.json_schema()
         self.assertIn("trend", schema["required"])
+        self.assertIn("editorial_comment", schema["required"])
+        self.assertEqual(schema["properties"]["editorial_comment"], {"type": "string"})
+        self.assertNotIn("editorial_comment", schema["properties"]["items"]["items"]["properties"])
         self.assertIn("china_impact", schema["properties"]["items"]["items"]["required"])
 
 

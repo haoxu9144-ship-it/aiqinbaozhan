@@ -44,7 +44,20 @@ jobs:
           python-version: "3.12"
 
       - name: 运行单元测试
-        run: python -m unittest discover -s tests -v
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y fonts-wqy-zenhei
+          python -m pip install -r requirements.txt
+          python -m unittest discover -s tests -v
 
       - name: 生成并按配置发布
         run: python src/ai_news_bot.py
+
+      - name: 保存当天深度 PDF（测试模式也可下载）
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aiqinbaozhan-deep-report-${{ github.run_id }}
+          path: output/pdf/*.pdf
+          if-no-files-found: ignore
+          retention-days: 30

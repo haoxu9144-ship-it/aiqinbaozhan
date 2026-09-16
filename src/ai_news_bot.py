@@ -13,9 +13,14 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+import uuid
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from typing import Any
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from deep_report import enrich_schema, editorial_prompt, validate_editorial, brief_post, build_pdf
 
 
 CHINA_TZ = timezone(timedelta(hours=8), name="Asia/Shanghai")
@@ -122,7 +127,7 @@ def json_schema() -> dict[str, Any]:
             "source_url",
         ],
     }
-    return {
+    return enrich_schema({
         "type": "object",
         "additionalProperties": False,
         "properties": {
@@ -138,7 +143,7 @@ def json_schema() -> dict[str, Any]:
             },
         },
         "required": ["items", "watch"],
-    }
+    })
 
 
 def build_prompt(now: datetime) -> str:
@@ -146,12 +151,12 @@ def build_prompt(now: datetime) -> str:
     start_text = window_start.astimezone(timezone.utc).isoformat(timespec="seconds")
     end_text = now.astimezone(timezone.utc).isoformat(timespec="seconds")
     china_date = now.astimezone(CHINA_TZ).strftime("%Y-%m-%d")
-    return f"""
+    return editorial_prompt() + f"""
 你是中文科技频道“AI情报站”的严谨主编。请先使用网页搜索，再筛选新闻。
 
 时间窗口：{start_text} 至 {end_text}（UTC）；中国日期：{china_date}。
 
-任务：只选出时间窗口内真正重要、可信且适合公开发布的 4～6 条 AI 新闻。范围仅限：
+任务：只选出时间窗口内真正重要、可信且适合公开发布的 4～8 条不同 AI 新闻。范围仅限：
 OpenAI、Anthropic、Google、Meta、AI 模型、Agent、AI 工具、芯片/算力、融资/商业化、
 AI 创业机会、重要政策。
 
@@ -246,21 +251,21 @@ def generate_digest(config: RuntimeConfig, now: datetime) -> dict[str, Any]:
         digest, searched_urls = parse_digest_response(response)
         try:
             validate_digest(digest, now, searched_urls=searched_urls)
-        except AppError as exc:
+        except AppError:
             count = digest_item_count(digest)
-            if count is not None and count < 4 and attempt < MAX_GENERATION_ATTEMPTS:
+            if count is not None and attempt < MAX_GENERATION_ATTEMPTS:
                 previous_count = count
-                print(f"首次严格筛选仅得到 {count} 条；正在扩大主题覆盖并重新检索一次。")
+                print(f"首次内容未通过事实或双层排版校验（{count} 条）；重新检索一次，不放宽标准。")
                 continue
             raise
         return digest
-    raise AppError("内容生成重试结束，但仍没有得到 4～6 条合格新闻。")
+    raise AppError("内容生成重试结束，但仍没有得到合格的双层新闻数据。")
 
 
 def request_digest_response(config: RuntimeConfig, prompt: str) -> dict[str, Any]:
     payload = {
         "model": config.model,
-        "instructions": "严格执行事实核查、时间窗口和 JSON 输出要求。",
+            "instructions": "严格执行事实核查、时间窗口和 JSON 输出要求。",
         "input": prompt,
         "tools": [
             {
@@ -284,7 +289,7 @@ def request_digest_response(config: RuntimeConfig, prompt: str) -> dict[str, Any
                 "schema": json_schema(),
             }
         },
-        "max_output_tokens": 5000,
+        "max_output_tokens": 14000,
         "store": False,
     }
     response = request_json(
@@ -395,9 +400,9 @@ def validate_digest(
     if not isinstance(digest, dict):
         raise AppError("生成结果不是 JSON 对象。")
     items = digest.get("items")
-    if not isinstance(items, list) or not 4 <= len(items) <= 6:
+    if not isinstance(items, list) or not 4 <= len(items) <= 8:
         actual = len(items) if isinstance(items, list) else 0
-        raise AppError(f"严格筛选后得到 {actual} 条新闻，不满足 4～6 条要求，停止发布。")
+        raise AppError(f"严格筛选后得到 {actual} 条新闻，不满足 4～8 条深度新闻要求，停止发布。")
     window_start = now - timedelta(hours=24)
     seen_urls: set[str] = set()
     searched_hosts = {canonical_host(url) for url in searched_urls or set()}
@@ -432,6 +437,10 @@ def validate_digest(
         isinstance(watch.get(field), str) and watch[field].strip() for field in ("thing", "reason")
     ):
         raise AppError("生成结果缺少“今日值得关注的一件事”。")
+    try:
+        validate_editorial(digest)
+    except ValueError as exc:
+        raise AppError(str(exc)) from None
 
 
 def clean_text(value: Any) -> str:
@@ -440,6 +449,13 @@ def clean_text(value: Any) -> str:
 
 
 def format_post(digest: dict[str, Any], now: datetime) -> str:
+    try:
+        return brief_post(digest, now.astimezone(CHINA_TZ))
+    except ValueError as exc:
+        raise AppError(str(exc)) from None
+
+
+def legacy_format_post(digest: dict[str, Any], now: datetime) -> str:
     local = now.astimezone(CHINA_TZ)
     lines = [f"🔥 今日 AI 情报｜{local.year}年{local.month}月{local.day}日", ""]
     for index, item in enumerate(digest["items"], start=1):
@@ -545,7 +561,39 @@ def publish_to_telegram(token: str, channel: str, post: str) -> int:
 
 
 def is_claimed_for_today(state: dict[str, Any], date_key: str) -> bool:
-    return state.get("date") == date_key and state.get("status") in {"sending", "published"}
+    return state.get("date") == date_key and state.get("status") in {"sending", "sending_main", "sending_document", "published"}
+
+
+class TelegramRejectedError(AppError):
+    """Telegram explicitly rejected a document; safe to retry the document only."""
+
+
+def publish_document(token: str, channel: str, path: Path, main_id: int, date_key: str) -> int:
+    boundary = "AIReport" + uuid.uuid4().hex
+    fields = {"chat_id": channel, "caption": f"📖 AI情报站｜{date_key} 全球 AI 深度情报\n上方精简主帖的完整版：背景、影响、创业机会与可靠来源。",
+              "reply_parameters": json.dumps({"message_id": main_id, "allow_sending_without_reply": False})}
+    chunks = []
+    for name, value in fields.items():
+        chunks.append(f'--{boundary}\r\nContent-Disposition: form-data; name="{name}"\r\n\r\n{value}\r\n'.encode("utf-8"))
+    chunks += [f'--{boundary}\r\nContent-Disposition: form-data; name="document"; filename="aiqinbaozhan-{date_key}-deep-report.pdf"\r\nContent-Type: application/pdf\r\n\r\n'.encode(), path.read_bytes(), f'\r\n--{boundary}--\r\n'.encode()]
+    request = urllib.request.Request(f"https://api.telegram.org/bot{token}/sendDocument", data=b"".join(chunks),
+                                     headers={"Content-Type": f"multipart/form-data; boundary={boundary}"}, method="POST")
+    # No transport retry: an accepted upload followed by timeout is ambiguous.
+    try:
+        with urllib.request.urlopen(request, timeout=120) as response:
+            result = json.loads(response.read().decode("utf-8"))
+    except urllib.error.HTTPError as exc:
+        detail = extract_remote_error(exc.read().decode("utf-8", errors="replace")[:1200])
+        error_type = TelegramRejectedError if 400 <= exc.code < 500 else AppError
+        raise error_type(f"Telegram PDF HTTP {exc.code}：{detail}") from None
+    except (urllib.error.URLError, TimeoutError, json.JSONDecodeError):
+        raise AppError("Telegram PDF 网络或响应异常，上传结果未知，禁止自动重发。") from None
+    if result.get("ok") is not True:
+        raise TelegramRejectedError(f"Telegram 拒绝 PDF：{result.get('description', '未提供说明')}")
+    message_id = result.get("result", {}).get("message_id")
+    if not isinstance(message_id, int):
+        raise AppError("PDF 返回成功但没有 message_id，上传结果未知。")
+    return message_id
 
 
 def run(config: RuntimeConfig, now: datetime | None = None) -> int:
@@ -559,59 +607,94 @@ def run(config: RuntimeConfig, now: datetime | None = None) -> int:
         store = GitHubStateStore(config.github_token, config.github_repository)
         state, state_sha = store.read()
         if is_claimed_for_today(state, date_key):
+            if state["status"] in {"sending_main", "sending_document"}:
+                raise AppError(f"{date_key} 的 {state['status']} 发送结果未知；请核对频道并按 README 恢复，禁止盲目重发。")
             print(f"{date_key} 已存在状态 {state['status']}，为避免重复发送，本次跳过。")
             return 0
 
-    digest = generate_digest(config, current)
+    resuming = bool(state and state.get("date") == date_key and state.get("status") == "main_sent")
+    if resuming:
+        digest = state.get("digest")
+        try:
+            current = datetime.fromisoformat(state["generated_at"])
+            validate_digest(digest, current)
+            if not isinstance(state.get("telegram_message_id"), int):
+                raise ValueError("缺少主帖ID")
+        except (KeyError, TypeError, ValueError) as exc:
+            raise AppError(f"PDF续传状态无效：{exc}") from None
+        print("检测到已发送主帖：只补发同一份深度PDF，不再次搜索或发送主帖。")
+    else:
+        digest = generate_digest(config, current)
     post = format_post(digest, current)
+    output_dir = Path("output/pdf")
+    try:
+        pdf_path = build_pdf(digest, current.astimezone(CHINA_TZ), output_dir / f"aiqinbaozhan-{date_key}-deep-report.pdf")
+    except Exception as exc:
+        raise AppError(f"PDF生成失败，尚未进行本次Telegram发送：{exc}") from None
+    if not pdf_path.is_file() or pdf_path.stat().st_size > 49 * 1024 * 1024:
+        raise AppError("PDF文件缺失或过大，停止发送。")
 
     print("\n===== 生成的 Telegram 帖子 =====\n")
     print(post)
     print("\n===== 帖子结束 =====\n")
 
     if config.dry_run:
-        print("DRY_RUN=true：仅输出预览，没有调用 Telegram，也没有修改发布状态。")
+        print(f"DRY_RUN=true：主帖仅日志预览，PDF已生成：{pdf_path}；没有调用 Telegram，也没有修改发布状态。")
         return 0
 
     assert store is not None and state_sha is not None
     content_hash = hashlib.sha256(post.encode("utf-8")).hexdigest()
     claimed_at = datetime.now(timezone.utc).isoformat(timespec="seconds")
-    claim = {
+    claim = state if resuming else {
         "date": date_key,
-        "status": "sending",
+        "status": "sending_main",
         "claimed_at": claimed_at,
         "content_sha256": content_hash,
+        "generated_at": current.isoformat(timespec="seconds"),
+        "digest": digest,
+        "channel": config.telegram_channel,
     }
-    state_sha = store.write(claim, state_sha, f"chore: claim publication for {date_key}")
-    print(f"已为 {date_key} 写入发送占位，后续重复运行将自动跳过。")
-
+    if resuming and claim.get("channel") != config.telegram_channel:
+        raise AppError("续传频道与原主帖不同，停止发送。")
+    if not resuming:
+        state_sha = store.write(claim, state_sha, f"chore: claim publication for {date_key}")
+        try:
+            message_id = publish_to_telegram(config.telegram_bot_token, config.telegram_channel, post)
+        except Exception as exc:
+            raise AppError(f"主帖发送未确认成功，保留 sending_main 占位，未发送PDF；请先核对频道。错误：{exc}") from None
+        claim = {**claim, "status": "main_sent", "telegram_message_id": message_id}
+        try:
+            state_sha = store.write(claim, state_sha, f"chore: save main message for {date_key}")
+        except Exception as exc:
+            raise AppError(f"主帖ID={message_id}已发送，但状态保存失败，尚未发送PDF；原占位阻止主帖重复。错误：{exc}") from None
+    else:
+        message_id = claim["telegram_message_id"]
+    uploading = {**claim, "status": "sending_document"}
+    state_sha = store.write(uploading, state_sha, f"chore: claim PDF upload for {date_key}")
     try:
-        message_id = publish_to_telegram(
-            config.telegram_bot_token,
-            config.telegram_channel,
-            post,
-        )
+        document_id = publish_document(config.telegram_bot_token, config.telegram_channel, pdf_path, message_id, date_key)
+    except TelegramRejectedError:
+        store.write(claim, state_sha, f"chore: PDF rejected; preserve main for {date_key}")
+        raise
     except Exception as exc:
-        raise AppError(
-            "Telegram 发布未确认成功；为避免重复，状态保留为 sending。"
-            "请先检查频道，再按 README 的故障恢复步骤处理。原始错误："
-            f"{exc}"
-        ) from None
+        raise AppError(f"主帖ID={message_id}已发送，PDF结果未知，保留 sending_document 占位，请核对频道。错误：{exc}") from None
 
     published = {
-        **claim,
+        **uploading,
         "status": "published",
         "published_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "telegram_message_id": message_id,
+        "telegram_document_message_id": document_id,
+        "pdf_sha256": hashlib.sha256(pdf_path.read_bytes()).hexdigest(),
     }
     try:
         store.write(published, state_sha, f"chore: mark publication complete for {date_key}")
     except Exception as exc:
         raise AppError(
-            f"Telegram 消息 {message_id} 已发送，但 GitHub 状态未能标记为 published；"
-            f"sending 占位仍会阻止重复发送。错误：{exc}"
+            f"Telegram主帖ID={message_id}和PDF ID={document_id}已发送，但状态未标记为 published；"
+            f"sending_document 占位仍会阻止重复发送。错误：{exc}"
         ) from None
-    print(f"发布成功：频道 {config.telegram_channel}，message_id={message_id}。")
+    print(f"发布成功：频道 {config.telegram_channel}，主帖ID={message_id}，PDF ID={document_id}。")
     return 0
 
 

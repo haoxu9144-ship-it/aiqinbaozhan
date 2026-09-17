@@ -1,6 +1,6 @@
 {
   "date": "2026-09-17",
-  "status": "sending_main",
+  "status": "main_sent",
   "claimed_at": "2026-09-17T01:11:41+00:00",
   "content_sha256": "45841b9062f2f02a239fa5daffa0219b3865c138e364561b9397a3b81dfc1988",
   "generated_at": "2026-09-17T01:10:17+00:00",
@@ -120,5 +120,6 @@
     ],
     "editorial_comment": "模型在抢着进办公室，算力却先去排电网的队；AI商业化终于遇到最不性感也最现实的账单。"
   },
-  "channel": "@aiqinbaozhan"
+  "channel": "@aiqinbaozhan",
+  "telegram_message_id": 9
 }

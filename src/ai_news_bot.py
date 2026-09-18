@@ -235,6 +235,36 @@ def extract_remote_error(text: str) -> str:
     return "请求失败，远程服务未提供可用错误说明。"
 
 
+def telegram_retry_after(text: str) -> int | None:
+    """Only retry an explicit flood-control rejection, never an ambiguous send."""
+    try:
+        payload = json.loads(text)
+        delay = payload.get("parameters", {}).get("retry_after")
+        if (payload.get("ok") is False and payload.get("error_code") == 429
+                and type(delay) is int and 1 <= delay <= 60):
+            return delay
+    except (ValueError, AttributeError, TypeError):
+        pass
+    return None
+
+
+def telegram_send_request(request, *, timeout=120):
+    for attempt in range(3):
+        try:
+            return urllib.request.urlopen(request, timeout=timeout)
+        except urllib.error.HTTPError as exc:
+            text = exc.read().decode("utf-8", errors="replace")[:1200]
+            delay = telegram_retry_after(text) if exc.code == 429 else None
+            if delay is not None and attempt < 2:
+                print(f"Telegram明确限流拒绝：等待{delay}秒后重试（{attempt + 1}/2）。")
+                time.sleep(delay)
+                continue
+            # Restore the body for the caller's existing safe error handling.
+            import io
+            exc.fp = io.BytesIO(text.encode("utf-8"))
+            raise
+
+
 def generate_digest(config: RuntimeConfig, now: datetime) -> dict[str, Any]:
     previous_count: int | None = None
     for attempt in range(1, MAX_GENERATION_ATTEMPTS + 1):
@@ -547,9 +577,16 @@ def publish_to_telegram(token: str, channel: str, post: str) -> int:
         "text": post,
         "disable_web_page_preview": True,
     }
-    # Never automatically retry sendMessage: a timeout after Telegram accepted the
-    # message is ambiguous, and retrying could create a duplicate post.
-    response = request_json(url, method="POST", body=body, retries=1)
+    # Retry only explicit flood-control rejection; a transport timeout is ambiguous.
+    request = urllib.request.Request(url, data=json.dumps(body, ensure_ascii=False).encode("utf-8"),
+                                     headers={"Content-Type": "application/json"}, method="POST")
+    try:
+        with telegram_send_request(request) as reply:
+            response = json.loads(reply.read().decode("utf-8"))
+    except urllib.error.HTTPError as exc:
+        raise AppError(f"Telegram主帖 HTTP {exc.code}：{extract_remote_error(exc.read().decode('utf-8', errors='replace'))}") from None
+    except (urllib.error.URLError, TimeoutError, json.JSONDecodeError):
+        raise AppError("Telegram主帖网络或响应异常，发送结果未知，禁止自动重发。") from None
     if response.get("ok") is not True:
         description = response.get("description", "Telegram 未确认发送成功。")
         raise AppError(f"Telegram 发送失败：{description}")
@@ -578,9 +615,9 @@ def publish_document(token: str, channel: str, path: Path, main_id: int, date_ke
     chunks += [f'--{boundary}\r\nContent-Disposition: form-data; name="document"; filename="aiqinbaozhan-{date_key}-deep-report.pdf"\r\nContent-Type: application/pdf\r\n\r\n'.encode(), path.read_bytes(), f'\r\n--{boundary}--\r\n'.encode()]
     request = urllib.request.Request(f"https://api.telegram.org/bot{token}/sendDocument", data=b"".join(chunks),
                                      headers={"Content-Type": f"multipart/form-data; boundary={boundary}"}, method="POST")
-    # No transport retry: an accepted upload followed by timeout is ambiguous.
+    # Same flood-control policy as the main post; no ambiguous transport retry.
     try:
-        with urllib.request.urlopen(request, timeout=120) as response:
+        with telegram_send_request(request) as response:
             result = json.loads(response.read().decode("utf-8"))
     except urllib.error.HTTPError as exc:
         detail = extract_remote_error(exc.read().decode("utf-8", errors="replace")[:1200])

@@ -1,6 +1,6 @@
 {
   "date": "2026-10-04",
-  "status": "sending_document",
+  "status": "published",
   "claimed_at": "2026-10-04T06:46:38+00:00",
   "content_sha256": "8fb6a2ffc9c7497dd2486844875c42cb6cb8d016a302e917d459e57d9f6f57b6",
   "generated_at": "2026-10-04T06:46:03+00:00",
@@ -40,5 +40,8 @@
     "editorial_comment": "模型还没拿到神谕，行业先开始讨论谁该当祭司。"
   },
   "channel": "@aiqinbaozhan",
-  "telegram_message_id": 18
+  "telegram_message_id": 18,
+  "published_at": "2026-10-04T06:46:43+00:00",
+  "telegram_document_message_id": 19,
+  "pdf_sha256": "f8d295b2af3f7fe6c159b2263b5e668351c685c0e2aaf30380d23d1c12a8c760"
 }

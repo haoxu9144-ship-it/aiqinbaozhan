@@ -1,6 +1,6 @@
 {
   "date": "2026-10-05",
-  "status": "sending_main",
+  "status": "main_sent",
   "claimed_at": "2026-10-05T06:46:50+00:00",
   "content_sha256": "cc9d03a390a2db99a869e5c3fb0ed013e5916eb0a25860c30928be43a861ccbb",
   "generated_at": "2026-10-05T06:46:18+00:00",
@@ -38,5 +38,6 @@
     ],
     "editorial_comment": "模型还没亮相，算力和生态的入场券倒先被摆上桌了。"
   },
-  "channel": "@aiqinbaozhan"
+  "channel": "@aiqinbaozhan",
+  "telegram_message_id": 20
 }

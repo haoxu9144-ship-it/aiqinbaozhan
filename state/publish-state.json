@@ -1,6 +1,6 @@
 {
   "date": "2026-10-05",
-  "status": "sending_document",
+  "status": "published",
   "claimed_at": "2026-10-05T06:46:50+00:00",
   "content_sha256": "cc9d03a390a2db99a869e5c3fb0ed013e5916eb0a25860c30928be43a861ccbb",
   "generated_at": "2026-10-05T06:46:18+00:00",
@@ -39,5 +39,8 @@
     "editorial_comment": "模型还没亮相，算力和生态的入场券倒先被摆上桌了。"
   },
   "channel": "@aiqinbaozhan",
-  "telegram_message_id": 20
+  "telegram_message_id": 20,
+  "published_at": "2026-10-05T06:46:56+00:00",
+  "telegram_document_message_id": 21,
+  "pdf_sha256": "277673d3c39b435ddc989d7d07ff8249f981dd8edb13360c7e4250a5c6aaad5e"
 }

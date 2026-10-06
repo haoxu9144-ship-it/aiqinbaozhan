@@ -1,6 +1,6 @@
 {
   "date": "2026-10-06",
-  "status": "sending_main",
+  "status": "main_sent",
   "claimed_at": "2026-10-06T07:24:55+00:00",
   "content_sha256": "a50545761ce961d980d2eca6be77b474926bf1f4d79089abf14c18dad5cc07bd",
   "generated_at": "2026-10-06T07:24:25+00:00",
@@ -40,5 +40,6 @@
     ],
     "editorial_comment": "模型跑得比规则快，地方听证会先来踩刹车，至少比等事故复盘靠谱。"
   },
-  "channel": "@aiqinbaozhan"
+  "channel": "@aiqinbaozhan",
+  "telegram_message_id": 22
 }

@@ -1,6 +1,6 @@
 {
   "date": "2026-10-07",
-  "status": "sending_document",
+  "status": "published",
   "claimed_at": "2026-10-07T07:20:28+00:00",
   "content_sha256": "83f589bf48c99402d5cf07e8e00f1a74008c89ff1bd7da11ddaecd70528d06d3",
   "generated_at": "2026-10-07T07:19:44+00:00",
@@ -41,5 +41,8 @@
     "editorial_comment": "参数已经上万亿，真正稀缺的反而是能稳定干活、别添乱的那一亿次调用。"
   },
   "channel": "@aiqinbaozhan",
-  "telegram_message_id": 24
+  "telegram_message_id": 24,
+  "published_at": "2026-10-07T07:20:35+00:00",
+  "telegram_document_message_id": 25,
+  "pdf_sha256": "12daf81a854f977eaa4ca654a857df6d53e075f0f6538a9cfb289937f2c95409"
 }

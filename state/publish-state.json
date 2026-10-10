@@ -1,6 +1,6 @@
 {
   "date": "2026-10-10",
-  "status": "sending_document",
+  "status": "published",
   "claimed_at": "2026-10-10T06:54:17+00:00",
   "content_sha256": "5bd50355e053d84c76a8349fd7ce11fcad9c9363c1961c2cb1ab333f84ce1298",
   "generated_at": "2026-10-10T06:53:45+00:00",
@@ -41,5 +41,8 @@
     "editorial_comment": "模型还在抢跑，预案已经开始排练散场；真正难卖的不是智能，而是失控后的责任单。"
   },
   "channel": "@aiqinbaozhan",
-  "telegram_message_id": 28
+  "telegram_message_id": 28,
+  "published_at": "2026-10-10T06:54:23+00:00",
+  "telegram_document_message_id": 29,
+  "pdf_sha256": "5920bb578166ae964cc26bd3c531bfd8876161fd5943055ccf14492cae394d9a"
 }

@@ -1,6 +1,6 @@
 {
   "date": "2026-10-11",
-  "status": "sending_document",
+  "status": "published",
   "claimed_at": "2026-10-11T06:58:22+00:00",
   "content_sha256": "62f57c8d7e76e7b947b71b281570850de0d1376d079f999589013638b4ffeed1",
   "generated_at": "2026-10-11T06:58:01+00:00",
@@ -41,5 +41,8 @@
     "editorial_comment": "模型会不会犯错已不是新鲜事，真正棘手的是它开始替你按下提交键。"
   },
   "channel": "@aiqinbaozhan",
-  "telegram_message_id": 31
+  "telegram_message_id": 31,
+  "published_at": "2026-10-11T06:58:28+00:00",
+  "telegram_document_message_id": 32,
+  "pdf_sha256": "b8602484ff30b20c7b6ed65d54b22bfcdac270460193369d00ad7d8b7064c0b7"
 }

@@ -1,6 +1,6 @@
 {
   "date": "2026-10-13",
-  "status": "sending_document",
+  "status": "published",
   "claimed_at": "2026-10-13T07:34:56+00:00",
   "content_sha256": "989b1df38bc47c44b5e46546e3b10c7af24392e8683071387a91fb869259a224",
   "generated_at": "2026-10-13T07:34:35+00:00",
@@ -62,5 +62,8 @@
     "editorial_comment": "模型在争夺记忆和客户，厂商则忙着给能力上锁，AI竞争越来越像既拼性能又拼门禁。"
   },
   "channel": "@aiqinbaozhan",
-  "telegram_message_id": 33
+  "telegram_message_id": 33,
+  "published_at": "2026-10-13T07:35:02+00:00",
+  "telegram_document_message_id": 34,
+  "pdf_sha256": "98fcc1ade9e04c66b42e28e69fb2a55411a358b69766239372de097618449615"
 }

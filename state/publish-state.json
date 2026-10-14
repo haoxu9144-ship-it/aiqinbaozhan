@@ -1,6 +1,6 @@
 {
   "date": "2026-10-14",
-  "status": "sending_main",
+  "status": "main_sent",
   "claimed_at": "2026-10-14T06:15:20+00:00",
   "content_sha256": "67e632336c2a1d3bf843338e123917585d2a3a8dec5a148882b77423c933b0ed",
   "generated_at": "2026-10-14T06:14:40+00:00",
@@ -61,5 +61,6 @@
     ],
     "editorial_comment": "AI厂商一边比模型聪明，一边比谁能把电费和推理账单管得更聪明。"
   },
-  "channel": "@aiqinbaozhan"
+  "channel": "@aiqinbaozhan",
+  "telegram_message_id": 35
 }

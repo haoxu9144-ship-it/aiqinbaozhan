@@ -1,6 +1,6 @@
 {
   "date": "2026-10-15",
-  "status": "sending_document",
+  "status": "published",
   "claimed_at": "2026-10-15T05:45:13+00:00",
   "content_sha256": "db522ffca7e99d9b78461b3e8d64b058cc87e84894de52aa7ae32e9ac1c77b9e",
   "generated_at": "2026-10-15T05:44:42+00:00",
@@ -42,5 +42,8 @@
     "editorial_comment": "模型会写方案，生态才决定它能不能真的把咖啡点到。"
   },
   "channel": "@aiqinbaozhan",
-  "telegram_message_id": 37
+  "telegram_message_id": 37,
+  "published_at": "2026-10-15T05:45:20+00:00",
+  "telegram_document_message_id": 38,
+  "pdf_sha256": "fcba4e5c3ef4ee956d1fef62bd41b44362cd22bab16b343dc7ba2cd68e0b8e6d"
 }

@@ -1,6 +1,6 @@
 {
   "date": "2026-10-16",
-  "status": "sending_main",
+  "status": "main_sent",
   "claimed_at": "2026-10-16T05:42:37+00:00",
   "content_sha256": "c53036dd49233b0ada91a5a3d7ff1679d6975d43f22624d0c4e1047b6615bc07",
   "generated_at": "2026-10-16T05:41:47+00:00",
@@ -61,5 +61,6 @@
     ],
     "editorial_comment": "模型还在冲刺，安全责任和芯片账单已经先到终点线。"
   },
-  "channel": "@aiqinbaozhan"
+  "channel": "@aiqinbaozhan",
+  "telegram_message_id": 39
 }

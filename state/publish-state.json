@@ -1,6 +1,6 @@
 {
   "date": "2026-10-17",
-  "status": "sending_main",
+  "status": "main_sent",
   "claimed_at": "2026-10-17T05:27:50+00:00",
   "content_sha256": "6af431e122411113c3084df4a822523295d001a4e31dcaff99388451bb46d0f2",
   "generated_at": "2026-10-17T05:26:54+00:00",
@@ -40,5 +40,6 @@
     ],
     "editorial_comment": "模型还在比参数，监管已经开始比边界；下一轮竞争，可能先拼谁更会填表。"
   },
-  "channel": "@aiqinbaozhan"
+  "channel": "@aiqinbaozhan",
+  "telegram_message_id": 41
 }

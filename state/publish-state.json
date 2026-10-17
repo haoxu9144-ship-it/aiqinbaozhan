@@ -1,6 +1,6 @@
 {
   "date": "2026-10-17",
-  "status": "sending_document",
+  "status": "published",
   "claimed_at": "2026-10-17T05:27:50+00:00",
   "content_sha256": "6af431e122411113c3084df4a822523295d001a4e31dcaff99388451bb46d0f2",
   "generated_at": "2026-10-17T05:26:54+00:00",
@@ -41,5 +41,8 @@
     "editorial_comment": "模型还在比参数，监管已经开始比边界；下一轮竞争，可能先拼谁更会填表。"
   },
   "channel": "@aiqinbaozhan",
-  "telegram_message_id": 41
+  "telegram_message_id": 41,
+  "published_at": "2026-10-17T05:27:56+00:00",
+  "telegram_document_message_id": 42,
+  "pdf_sha256": "90b7c3bd82ea4a48044ae47855171c6b809d6afba5670773d2fbbe066f19547d"
 }

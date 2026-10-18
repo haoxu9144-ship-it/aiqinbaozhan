@@ -1,48 +1,86 @@
 {
-  "date": "2026-10-17",
-  "status": "published",
-  "claimed_at": "2026-10-17T05:27:50+00:00",
-  "content_sha256": "6af431e122411113c3084df4a822523295d001a4e31dcaff99388451bb46d0f2",
-  "generated_at": "2026-10-17T05:26:54+00:00",
+  "date": "2026-10-18",
+  "status": "sending_main",
+  "claimed_at": "2026-10-18T05:39:29+00:00",
+  "content_sha256": "ce25ea7b43efdca1e5f04710fdf51373a74abb7e08759f343752fa9587905b0e",
+  "generated_at": "2026-10-18T05:38:49+00:00",
   "digest": {
     "items": [
       {
-        "headline": "中国拟收紧AI技术出口",
-        "what_happened": "中国商务部与科技部发布技术出口目录修订草案，拟将先进大模型、智能体等23项AI技术纳入限制或禁止出口范围，并称措施与国家安全和防止滥用有关。",
-        "why_important": "这是中国AI模型、智能体和数据安全政策从国内治理延伸至跨境技术流动的重要信号，可能影响模型授权、海外部署、供应链合作及中美AI竞争规则。",
-        "published_at": "2026-10-16T12:20:52Z",
-        "source_name": "美联社 AP News",
-        "source_url": "https://apnews.com/article/china-export-restrictions-ai-chips-solar-us-5ac381c0c6d6628bbea2e0da7d855a5b",
-        "takeaway": "中国拟限制23项AI技术出口，模型与智能体跨境部署或更受约束。",
-        "background": "美联社报道，中国商务部和科技部联合发布技术出口目录修订草案，覆盖人工智能、芯片和太阳能等40项技术。其中，使用敏感国家数据训练的大模型核心技术，以及面向国防和关键信息基础设施的AI智能体，拟被禁止或限制出口；目前仍是草案。",
-        "china_impact": "对中国用户而言，国内模型服务和常规使用的直接影响尚未确认；但涉及敏感数据训练、跨境API、模型授权和海外云部署的企业，可能面临更严格的审批、分类和合规审查，具体执行范围需等待正式目录及配套解释。",
-        "entrepreneur_impact": "跨境模型服务商、AI代理开发商和数据处理企业可能需要重新评估技术出口、数据来源与客户所在行业。合规咨询、模型权限管理和本地化部署可能出现需求，但市场规模、审批流程及执行时间目前均未确认。",
-        "attention_reason": "值得关注，因为它把AI模型和智能体明确纳入技术出口治理框架。下一步应核验正式目录是否通过、23项AI技术的具体分类、是否覆盖开源权重和API服务，以及对现有海外合同和研发合作的过渡安排。",
-        "region": "domestic",
+        "headline": "Replit将OpenAI设为默认模型",
+        "what_happened": "Replit CEO Amjad Masad表示，公司已将OpenAI ChatGPT设为Replit Agent的默认模型，理由包括性能、成本和合作关系；用户仍可选择Anthropic等模型。",
+        "why_important": "这显示编码Agent的模型选择正从单纯能力竞赛转向综合比较性能、调用成本与商业绑定。Replit的切换也可能影响Anthropic在开发者工具中的使用量和议价能力。",
+        "published_at": "2026-10-17T18:48:00+00:00",
+        "source_name": "TechCrunch",
+        "source_url": "https://techcrunch.com/2026/10/17/replit-is-no-longer-working-with-anthropic-ceo-says/",
+        "takeaway": "Replit把默认模型切给OpenAI，Agent采购进入性能与成本并重阶段。",
+        "background": "Replit此前依赖Anthropic Claude运行其开发平台，后来与OpenAI建立合作。此次调整并非彻底排除Anthropic，用户仍能访问Claude等模型；公司称OpenAI目前更适合驱动Replit Agent，但相关合作状态存在不同说法。",
+        "china_impact": "中国开发者若使用类似海外编码Agent，可能看到默认模型、价格和可用区域持续调整。Replit的模型切换对国内平台的直接影响尚未确认，但提示企业应比较API稳定性、代码能力、数据处理位置与合规条件。",
+        "entrepreneur_impact": "编码Agent创业者可能需要采用多模型路由，根据任务质量、成本和延迟动态切换供应商。限制在于模型默认设置不等于长期独家合作，且企业客户仍会重点核验代码安全、权限隔离、审计与部署方式。",
+        "attention_reason": "值得关注，因为它是一个真实的企业级模型采购调整。下一步应核验Replit后续公开基准、默认模型的实际调用占比，以及Anthropic模型是否继续承担关键生产任务。",
+        "region": "global",
+        "category": "business",
+        "key_updates": [
+          "Replit将OpenAI ChatGPT设为Replit Agent默认模型。",
+          "用户仍可在平台上使用Anthropic及其他支持模型。",
+          "Replit称今年企业合同收入约占15%，B2B收入超过50%。"
+        ],
+        "in_brief": true
+      },
+      {
+        "headline": "Meta撤回引发争议的抓取条款",
+        "what_happened": "Meta删除了商业条款中一段可能被理解为允许抓取企业网站内容并用于训练、改进AI产品的表述，并称这是对条款范围的澄清，不代表改变网络爬虫使用方式。",
+        "why_important": "事件反映AI训练数据的授权边界仍在快速变化，平台条款、网站抓取和模型训练之间的法律与商业关系尚未稳定。Meta主动修改文字，也说明内容提供方的反弹已影响产品规则表达。",
+        "published_at": "2026-10-17T21:31:00+00:00",
+        "source_name": "TechCrunch",
+        "source_url": "https://techcrunch.com/2026/10/17/meta-removes-language-that-raised-scraping-and-ai-training-concerns/",
+        "takeaway": "Meta撤回争议抓取条款，AI训练数据的授权边界仍未定型。",
+        "background": "Meta此前更新商业使用条款，加入可使用企业账户关联域名、网页或URL内容来提供、开发、改进和训练产品的表述。法律专家认为范围过宽，可能影响新闻出版商等内容方；Meta随后删除相关文字并解释条款仅涉及广告和商业产品。",
+        "china_impact": "中国企业使用海外平台投放广告、运营账号或提供网页内容时，可能受到条款变化和跨境数据规则影响。此次修改是否改变Meta实际抓取行为尚未确认，国内团队仍需逐项检查授权、数据跨境和训练使用条款。",
+        "entrepreneur_impact": "内容平台和AI创业者可能获得更清晰的商业条款谈判空间，也需要建立来源授权、拒绝抓取和审计机制。限制在于删除一段文字不等于彻底停止抓取，实际技术行为和法律责任仍需继续核验。",
+        "attention_reason": "值得关注，因为训练数据从技术问题变成平台规则和商业合同问题。下一步应观察Meta完整条款、爬虫政策及内容方是否继续提出异议，避免把措辞调整误判为政策彻底转向。",
+        "region": "global",
         "category": "news",
         "key_updates": [
-          "草案涉及40项技术，其中23项属于人工智能领域。",
-          "拟禁止使用敏感国家数据训练的大模型核心技术出口。",
-          "面向国防和关键信息基础设施的部分AI智能体拟纳入出口限制。"
+          "Meta删除了可能被理解为允许网站内容用于AI训练的条款表述。",
+          "Meta称相关修改是澄清广告和商业产品条款范围。",
+          "Meta表示此举不改变其网络爬虫使用方式。"
+        ],
+        "in_brief": true
+      },
+      {
+        "headline": "Anthropic员工结构明显更资深",
+        "what_happened": "Anthropic发布内部工作报告称，技术部门初级员工占比从2025年初的21%降至14%，初级技术岗位招聘占比从27%降至9%；员工会议时间同比上升20%。",
+        "why_important": "这提供了少见的企业内部样本：AI工具提高产出同时，可能减少初级岗位训练空间，并把更多工作转向协调、审核和管理。它也说明Agent普及后的瓶颈可能从执行能力转向人的注意力与判断力。",
+        "published_at": "2026-10-17T20:21:00+00:00",
+        "source_name": "TechCrunch",
+        "source_url": "https://techcrunch.com/2026/10/17/anthropic-says-its-workforce-has-become-less-junior-and-is-spending-more-time-in-meetings/",
+        "takeaway": "Anthropic内部初级岗位减少，AI效率提升却推高了协调与审核成本。",
+        "background": "Anthropic报告以自身高度使用Claude的工作环境为案例，讨论AI如何改变招聘、岗位结构和组织协作。报告称技术团队占全员比例从61%降至56%，同时员工反馈Claude带来更多代码和合同处理，但也产生大量需要人工阅读、整理和判断的内容。",
+        "china_impact": "中国企业引入大模型和Agent后，可能同样面临初级岗位训练减少、复核工作增加和组织协作复杂化的问题。Anthropic的数据不能直接代表中国企业，国内行业、岗位和监管环境差异较大，外推结论仍需验证。",
+        "entrepreneur_impact": "企业服务创业者可关注Agent审计、任务编排、知识交接、质量复核和员工培训工具，而不是只卖生成能力。限制在于效率提升未必等于经营改善，客户仍需评估错误成本、人员调整和流程重构投入。",
+        "attention_reason": "值得关注，因为它把AI影响就业的讨论落到了真实组织数据上。下一步应核验报告原文口径、样本周期和因果关系，尤其要区分AI带来的岗位变化与公司扩张阶段造成的结构变化。",
+        "region": "global",
+        "category": "business",
+        "key_updates": [
+          "技术部门初级员工占比由21%降至14%。",
+          "初级技术岗位招聘占比由27%降至9%。",
+          "员工人均会议时间同比增加20%，技术人员增加16%。"
         ],
         "in_brief": true
       }
     ],
     "watch": {
-      "thing": "中国技术出口目录修订草案是否转为正式规则，以及AI大模型、智能体和开源权重的具体适用边界。",
-      "reason": "正式文本将决定跨境模型服务、数据处理、API调用和海外部署的实际合规成本。"
+      "thing": "Anthropic、OpenAI与开发者平台的模型默认选择和安全审计变化",
+      "reason": "本窗口内的多条新闻都显示，模型采购正在同时受性能、成本、数据授权和Agent安全影响；后续需核验这些调整是否转化为公开产品、价格或合作变化。"
     },
-    "trend": "AI竞争正从模型能力比拼，延伸到技术出口、数据安全与跨境部署规则。",
+    "trend": "AI竞争从模型能力扩展到默认入口、训练授权与组织效率。",
     "takeaways": [
-      "中国拟把23项AI技术纳入出口限制范围。",
-      "敏感数据训练模型和高风险智能体受重点关注。",
-      "草案未定稿，具体执行边界仍待正式文件确认。"
+      "Replit切换默认模型，Agent采购更加看重综合成本。",
+      "Meta修改抓取条款，训练数据授权边界仍在博弈。",
+      "Anthropic数据显示，AI效率可能伴随更多人工协调。"
     ],
-    "editorial_comment": "模型还在比参数，监管已经开始比边界；下一轮竞争，可能先拼谁更会填表。"
+    "editorial_comment": "模型会自己写代码了，但企业还得先学会给它们分工、授权和收拾残局。"
   },
-  "channel": "@aiqinbaozhan",
-  "telegram_message_id": 41,
-  "published_at": "2026-10-17T05:27:56+00:00",
-  "telegram_document_message_id": 42,
-  "pdf_sha256": "90b7c3bd82ea4a48044ae47855171c6b809d6afba5670773d2fbbe066f19547d"
+  "channel": "@aiqinbaozhan"
 }

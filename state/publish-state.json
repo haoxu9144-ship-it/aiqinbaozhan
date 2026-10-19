@@ -1,6 +1,6 @@
 {
   "date": "2026-10-19",
-  "status": "sending_main",
+  "status": "main_sent",
   "claimed_at": "2026-10-19T05:56:49+00:00",
   "content_sha256": "f0e1948fcb3622a9c02842a705cf4523f4a32eea9cc7ade74b95678979206a91",
   "generated_at": "2026-10-19T05:56:14+00:00",
@@ -41,5 +41,6 @@
     ],
     "editorial_comment": "模型会刷榜，工厂要交付；AI真正的期末考，还是产线账本。"
   },
-  "channel": "@aiqinbaozhan"
+  "channel": "@aiqinbaozhan",
+  "telegram_message_id": 45
 }

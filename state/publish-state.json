@@ -1,6 +1,6 @@
 {
   "date": "2026-10-20",
-  "status": "sending_document",
+  "status": "published",
   "claimed_at": "2026-10-20T05:49:36+00:00",
   "content_sha256": "5007245b355367bb96f89ca6f59b8fe0860436b61f612027669e320963aa2c38",
   "generated_at": "2026-10-20T05:49:10+00:00",
@@ -37,5 +37,8 @@
     "editorial_comment": "芯片公司开始给制造业上课，真正的作业还是数据和落地。"
   },
   "channel": "@aiqinbaozhan",
-  "telegram_message_id": 47
+  "telegram_message_id": 47,
+  "published_at": "2026-10-20T05:49:41+00:00",
+  "telegram_document_message_id": 48,
+  "pdf_sha256": "5c281a5a4b0ddd20b1864ed4ac2b336b22834dcdf2f24d6eccef04a26156b5e1"
 }

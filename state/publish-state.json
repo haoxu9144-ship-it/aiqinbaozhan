@@ -1,6 +1,6 @@
 {
   "date": "2026-10-21",
-  "status": "sending_main",
+  "status": "main_sent",
   "claimed_at": "2026-10-21T05:52:35+00:00",
   "content_sha256": "dd70df182d78d062a174cd939fcab5f378fd58ad64b75cde4ef2c6609259dc45",
   "generated_at": "2026-10-21T05:52:03+00:00",
@@ -78,5 +78,6 @@
     ],
     "editorial_comment": "模型会写代码、做交易，先学会管好钥匙和账本，才算真正进入企业主桌。"
   },
-  "channel": "@aiqinbaozhan"
+  "channel": "@aiqinbaozhan",
+  "telegram_message_id": 49
 }

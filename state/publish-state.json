@@ -1,6 +1,6 @@
 {
   "date": "2026-10-22",
-  "status": "sending_document",
+  "status": "published",
   "claimed_at": "2026-10-22T05:56:04+00:00",
   "content_sha256": "2920fd5863e55354d0df489c09fa3e092eadfcfffe53a7ff7389b723a3a5d0a0",
   "generated_at": "2026-10-22T05:55:26+00:00",
@@ -62,5 +62,8 @@
     "editorial_comment": "模型还在比高低，生意已经先比谁更会铺渠道、接场景和算账。"
   },
   "channel": "@aiqinbaozhan",
-  "telegram_message_id": 51
+  "telegram_message_id": 51,
+  "published_at": "2026-10-22T05:56:10+00:00",
+  "telegram_document_message_id": 52,
+  "pdf_sha256": "a29a6fcf138ee8f89b3681fbc12dd0e17507a1be35718c675c42da043dd621ab"
 }

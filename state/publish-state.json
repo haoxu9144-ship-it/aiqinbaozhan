@@ -1,6 +1,6 @@
 {
   "date": "2026-10-23",
-  "status": "sending_main",
+  "status": "main_sent",
   "claimed_at": "2026-10-23T05:54:16+00:00",
   "content_sha256": "7a4dac4c518165ddd891a05d92876c3436490a2e55164294dddf91485940360e",
   "generated_at": "2026-10-23T05:52:56+00:00",
@@ -39,5 +39,6 @@
     ],
     "editorial_comment": "模型还在加速进化，资本市场先给算力账单做了压力测试。"
   },
-  "channel": "@aiqinbaozhan"
+  "channel": "@aiqinbaozhan",
+  "telegram_message_id": 53
 }

@@ -1,6 +1,6 @@
 {
   "date": "2026-10-24",
-  "status": "sending_document",
+  "status": "published",
   "claimed_at": "2026-10-24T05:37:04+00:00",
   "content_sha256": "029bf8d1f4dcd0140e33ada3187706f6ae454dac9d9411302b0a3a5794f1b7da",
   "generated_at": "2026-10-24T05:36:23+00:00",
@@ -62,5 +62,8 @@
     "editorial_comment": "模型还在加速，资本市场先学会了踩刹车：算力账单终究要有人买单。"
   },
   "channel": "@aiqinbaozhan",
-  "telegram_message_id": 55
+  "telegram_message_id": 55,
+  "published_at": "2026-10-24T05:37:10+00:00",
+  "telegram_document_message_id": 56,
+  "pdf_sha256": "49ee143a333f1154b30606f08eb552a504352e4f8a9a4c61eac7b71f3a141c74"
 }

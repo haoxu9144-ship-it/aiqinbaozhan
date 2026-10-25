@@ -1,6 +1,6 @@
 {
   "date": "2026-10-25",
-  "status": "sending_main",
+  "status": "main_sent",
   "claimed_at": "2026-10-25T06:18:06+00:00",
   "content_sha256": "fe75098ab2e7ab8bdef475fc195ab2a8684263e301569a9df61f15c646dd8032",
   "generated_at": "2026-10-25T06:17:09+00:00",
@@ -40,5 +40,6 @@
     ],
     "editorial_comment": "模型还没学会自我进化，先学会了提醒工程师别把网线插太近。"
   },
-  "channel": "@aiqinbaozhan"
+  "channel": "@aiqinbaozhan",
+  "telegram_message_id": 57
 }

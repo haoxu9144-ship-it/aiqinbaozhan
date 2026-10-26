@@ -1,6 +1,6 @@
 {
   "date": "2026-10-26",
-  "status": "sending_main",
+  "status": "main_sent",
   "claimed_at": "2026-10-26T05:56:38+00:00",
   "content_sha256": "d8d58c24154eb398fbb810f65ec1953b75c47809c4484166704ef054507e29bb",
   "generated_at": "2026-10-26T05:56:07+00:00",
@@ -38,5 +38,6 @@
     ],
     "editorial_comment": "模型还没学会做人，厂商先开始研究人为什么这样做人了。"
   },
-  "channel": "@aiqinbaozhan"
+  "channel": "@aiqinbaozhan",
+  "telegram_message_id": 59
 }

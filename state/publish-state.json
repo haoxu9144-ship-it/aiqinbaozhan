@@ -1,6 +1,6 @@
 {
   "date": "2026-10-26",
-  "status": "sending_document",
+  "status": "published",
   "claimed_at": "2026-10-26T05:56:38+00:00",
   "content_sha256": "d8d58c24154eb398fbb810f65ec1953b75c47809c4484166704ef054507e29bb",
   "generated_at": "2026-10-26T05:56:07+00:00",
@@ -39,5 +39,8 @@
     "editorial_comment": "模型还没学会做人，厂商先开始研究人为什么这样做人了。"
   },
   "channel": "@aiqinbaozhan",
-  "telegram_message_id": 59
+  "telegram_message_id": 59,
+  "published_at": "2026-10-26T05:56:45+00:00",
+  "telegram_document_message_id": 60,
+  "pdf_sha256": "e36b7cd5e88cac991172f2f112c3d7aedd144c10e1f3835ba36d31db11afb104"
 }

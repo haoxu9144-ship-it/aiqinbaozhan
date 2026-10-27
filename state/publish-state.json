@@ -1,6 +1,6 @@
 {
   "date": "2026-10-27",
-  "status": "sending_main",
+  "status": "main_sent",
   "claimed_at": "2026-10-27T06:08:01+00:00",
   "content_sha256": "5f04021632e6c7bd9e2e28485992d2e6bf52fb697ce83faa0a34942de16c324b",
   "generated_at": "2026-10-27T06:07:17+00:00",
@@ -61,5 +61,6 @@
     ],
     "editorial_comment": "模型还在比谁更聪明，财务部门已经先比谁更能烧钱。"
   },
-  "channel": "@aiqinbaozhan"
+  "channel": "@aiqinbaozhan",
+  "telegram_message_id": 61
 }

@@ -1,6 +1,6 @@
 {
   "date": "2026-10-28",
-  "status": "sending_document",
+  "status": "published",
   "claimed_at": "2026-10-28T06:46:14+00:00",
   "content_sha256": "536efb5f9a785ebdf7e825ece29acca00657799661098c0fb7662734bcb00434",
   "generated_at": "2026-10-28T06:45:20+00:00",
@@ -42,5 +42,8 @@
     "editorial_comment": "芯片开始组团上云，真正的硬仗才从发布会转到账单上。"
   },
   "channel": "@aiqinbaozhan",
-  "telegram_message_id": 63
+  "telegram_message_id": 63,
+  "published_at": "2026-10-28T06:46:20+00:00",
+  "telegram_document_message_id": 64,
+  "pdf_sha256": "8a02e423e504c761eefd8d8f94f5e7be279344dfa529b9fd4beaa4a9711fb64a"
 }

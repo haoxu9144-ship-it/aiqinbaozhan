@@ -1,6 +1,6 @@
 {
   "date": "2026-10-28",
-  "status": "sending_main",
+  "status": "main_sent",
   "claimed_at": "2026-10-28T06:46:14+00:00",
   "content_sha256": "536efb5f9a785ebdf7e825ece29acca00657799661098c0fb7662734bcb00434",
   "generated_at": "2026-10-28T06:45:20+00:00",
@@ -41,5 +41,6 @@
     ],
     "editorial_comment": "芯片开始组团上云，真正的硬仗才从发布会转到账单上。"
   },
-  "channel": "@aiqinbaozhan"
+  "channel": "@aiqinbaozhan",
+  "telegram_message_id": 63
 }

@@ -1,6 +1,6 @@
 {
   "date": "2026-10-29",
-  "status": "sending_main",
+  "status": "main_sent",
   "claimed_at": "2026-10-29T06:54:21+00:00",
   "content_sha256": "759eba3426ca3e8691946cc763a399d506c1838b6e5958389a4140462edccfd9",
   "generated_at": "2026-10-29T06:53:26+00:00",
@@ -61,5 +61,6 @@
     ],
     "editorial_comment": "模型还在卷，市场先拿财报当裁判，算力账单终于有了回声。"
   },
-  "channel": "@aiqinbaozhan"
+  "channel": "@aiqinbaozhan",
+  "telegram_message_id": 65
 }

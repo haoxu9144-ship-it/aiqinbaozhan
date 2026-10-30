@@ -1,6 +1,6 @@
 {
   "date": "2026-10-30",
-  "status": "sending_main",
+  "status": "main_sent",
   "claimed_at": "2026-10-30T06:58:28+00:00",
   "content_sha256": "4500c129317f901440172e1097c4ccf4c9db6e2c15f0a469dd50770478b685f0",
   "generated_at": "2026-10-30T06:56:36+00:00",
@@ -40,5 +40,6 @@
     ],
     "editorial_comment": "AI眼镜先学会看见被忽视的人，才配谈看见未来。"
   },
-  "channel": "@aiqinbaozhan"
+  "channel": "@aiqinbaozhan",
+  "telegram_message_id": 67
 }

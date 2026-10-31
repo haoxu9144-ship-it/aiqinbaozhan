@@ -1,48 +1,64 @@
 {
-  "date": "2026-10-30",
-  "status": "published",
-  "claimed_at": "2026-10-30T06:58:28+00:00",
-  "content_sha256": "4500c129317f901440172e1097c4ccf4c9db6e2c15f0a469dd50770478b685f0",
-  "generated_at": "2026-10-30T06:56:36+00:00",
+  "date": "2026-10-31",
+  "status": "sending_main",
+  "claimed_at": "2026-10-31T06:52:03+00:00",
+  "content_sha256": "a11c2e1163248efe7f730225e13e283ac799782a5f25b96707569e8804cde7d6",
+  "generated_at": "2026-10-31T06:50:46+00:00",
   "digest": {
     "items": [
       {
-        "headline": "Meta与CNIB共推AI眼镜无障碍",
-        "what_happened": "Meta宣布与加拿大国家盲人协会CNIB合作，由CNIB组织社区倾听、同伴培训和产品反馈，并通过Come to Work项目捐赠AI眼镜，帮助视障及聋盲人士探索就业场景中的可穿戴技术。",
-        "why_important": "这不是单纯增加硬件销量，而是把视障用户的真实使用经验纳入产品研发闭环。若反馈机制持续，AI眼镜可能从演示型设备转向更强调可及性、独立生活和职场辅助的产品。",
-        "published_at": "2026-10-29T17:00:00+00:00",
-        "source_name": "Meta Newsroom",
-        "source_url": "https://about.fb.com/news/2026/10/the-future-is-for-everyone-meta-and-cnib-partner-to-support-canadians-who-are-blind-deafblind-or-have-low-vision/amp/",
-        "takeaway": "Meta把AI眼镜推进到无障碍和就业辅助场景。",
-        "background": "Meta表示，其AI眼镜可用于朗读文字、识别物体、描述环境、实时翻译和免手持通话。此次合作由CNIB连接加拿大视障、聋盲及低视力社区，提供培训、资源和产品建议。",
-        "china_impact": "中国大陆用户能否直接使用相关硬件、服务和功能尚未确认。若类似模式进入国内，产品仍需适配中文识别、无障碍标准、隐私保护和本地服务体系。",
-        "entrepreneur_impact": "无障碍培训、场景化内容适配、辅助就业服务和真实用户测试可能出现需求，但机会受硬件覆盖、识别准确率、数据授权及服务成本限制，不能据此承诺商业回报。",
-        "attention_reason": "值得关注，因为Meta把AI眼镜的推广从消费电子扩展到公益和就业辅助。下一步应核验合作覆盖人数、设备型号、实际使用反馈及是否形成可复制的产品改进。",
+        "headline": "四大模型商支持统一拒训信号",
+        "what_happened": "OpenAI、Google、Microsoft和Anthropic支持在robots.txt中使用统一AI训练偏好信号，让网站运营者通过一条规则表达是否允许内容用于生成式AI训练。",
+        "why_important": "这把模型训练与网站内容控制从各家独立规则，推进到跨平台协同机制；但信号仍属自愿方案，实际约束力取决于各厂商何时落地及如何执行。",
+        "published_at": "2026-10-30T18:26:00Z",
+        "source_name": "Blockchain.News",
+        "source_url": "https://blockchain.news/news/openai-honor-shared-robots-txt-ai-training-signal",
+        "takeaway": "统一拒训信号获四家模型商支持，但落地仍要等执行。",
+        "background": "目前网站通常需分别配置GPTBot、Google-Extended等厂商规则。此次方案基于IETF AI Preferences工作，试图用统一的robots.txt策略降低网站维护成本，同时保留现有厂商专属控制。",
+        "china_impact": "中国网站和内容平台理论上可减少多家模型爬虫规则的维护成本，但该信号是否被中国模型厂商采纳、是否影响境内合规流程，尚未确认，仍需观察标准化和本地平台支持情况。",
+        "entrepreneur_impact": "内容平台、版权管理和爬虫治理工具可能出现统一配置需求，但商业价值取决于厂商真实执行、审计接口和争议处理机制；仅提供配置界面还不足以证明用户愿意付费。",
+        "attention_reason": "值得关注，因为它直接触及训练数据授权与版权治理。下一步应核验IETF草案是否推进为标准、Anthropic以外厂商的上线时间，以及拒训信号能否影响已采集数据。",
         "region": "global",
-        "category": "business",
+        "category": "news",
         "key_updates": [
-          "CNIB将组织社区倾听、同伴培训和产品反馈。",
-          "Meta将向CNIB的Come to Work项目捐赠AI眼镜。",
-          "合作反馈将提供给Meta无障碍和产品团队。"
+          "OpenAI计划在未来数月实施该信号",
+          "Google计划于2027年支持",
+          "Microsoft计划于2027年2月1日开始执行"
+        ],
+        "in_brief": true
+      },
+      {
+        "headline": "Kimi Code出现K3响应变慢",
+        "what_happened": "Moonshot官方状态信息显示，Kimi Code K3出现OTPS响应生成速度严重下降的问题，事件仍处于调查状态。独立状态记录将首次时间标为2026年10月31日03:42 UTC。",
+        "why_important": "这会直接影响Kimi Code用户的编程代理体验，尤其是长任务、自动补全和多轮执行；事件也提示高并发模型服务的稳定性仍是Agent产品商业化的关键限制。",
+        "published_at": "2026-10-31T03:42:00Z",
+        "source_name": "SquidGrid",
+        "source_url": "https://squidgrid.net/provider-moonshot",
+        "takeaway": "Kimi Code K3出现响应变慢，Agent稳定性仍待验证。",
+        "background": "Kimi Code依赖K3模型提供代码生成与代理式编程能力。Moonshot状态页列出该事件为未解决问题，涉及输出生成速度；此前K3也出现过首字延迟升高和模型服务波动记录。",
+        "china_impact": "中国用户可能遇到代码生成变慢、任务排队或长流程中断；是否影响Kimi网页端、API及不同地区用户尚未确认，企业用户应准备备用模型和超时重试策略。",
+        "entrepreneur_impact": "开发者工具可围绕多模型路由、任务断点续跑和服务健康监测形成需求，但需要验证客户是否愿为稳定性付费，也不能把单次故障直接推断为长期服务能力问题。",
+        "attention_reason": "值得关注，因为它发生在国内Agent编程工具竞争加剧阶段。下一步应核验Moonshot官方后续是否恢复、影响范围、持续时长及是否给出技术原因或补偿安排。",
+        "region": "domestic",
+        "category": "tool",
+        "key_updates": [
+          "事件首次记录时间为2026年10月31日03:42 UTC",
+          "状态为Investigating，问题描述为K3 OTPS响应速度下降"
         ],
         "in_brief": true
       }
     ],
     "watch": {
-      "thing": "Meta与CNIB合作后，AI眼镜在加拿大视障就业场景中的实际使用效果与后续产品改进。",
-      "reason": "目前公开信息主要是合作安排，尚未披露覆盖规模、长期效果和用户满意度。"
+      "thing": "统一AI训练偏好信号的正式落地",
+      "reason": "继续核验OpenAI、Google、Microsoft和Anthropic的实际执行时间，以及中国模型厂商是否跟进支持。"
     },
-    "trend": "AI硬件开始从炫技展示转向无障碍、就业辅助等真实使用场景。",
+    "trend": "AI行业开始把竞争延伸到训练数据控制与Agent服务稳定性。",
     "takeaways": [
-      "Meta与CNIB合作推进AI眼镜无障碍使用。",
-      "CNIB将把社区反馈带入Meta产品研发。",
-      "实际覆盖规模和使用效果仍待后续验证。"
+      "统一拒训信号获支持，但执行时间仍不一致。",
+      "Kimi Code K3变慢，Agent稳定性成为产品门槛。",
+      "训练规则与服务可靠性都进入商业化核验期。"
     ],
-    "editorial_comment": "AI眼镜先学会看见被忽视的人，才配谈看见未来。"
+    "editorial_comment": "AI开始给网站发“请勿投喂”，但版权边界最终还得看执行，不是看robots.txt排版。"
   },
-  "channel": "@aiqinbaozhan",
-  "telegram_message_id": 67,
-  "published_at": "2026-10-30T06:58:34+00:00",
-  "telegram_document_message_id": 68,
-  "pdf_sha256": "0de14429b6a0e538af611b00aaacb0d0f7b8ee4fb3fa1c6f4c4c0817db79500c"
+  "channel": "@aiqinbaozhan"
 }

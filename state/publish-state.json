@@ -1,6 +1,6 @@
 {
   "date": "2026-10-31",
-  "status": "sending_document",
+  "status": "published",
   "claimed_at": "2026-10-31T06:52:03+00:00",
   "content_sha256": "a11c2e1163248efe7f730225e13e283ac799782a5f25b96707569e8804cde7d6",
   "generated_at": "2026-10-31T06:50:46+00:00",
@@ -61,5 +61,8 @@
     "editorial_comment": "AI开始给网站发“请勿投喂”，但版权边界最终还得看执行，不是看robots.txt排版。"
   },
   "channel": "@aiqinbaozhan",
-  "telegram_message_id": 69
+  "telegram_message_id": 69,
+  "published_at": "2026-10-31T06:52:08+00:00",
+  "telegram_document_message_id": 70,
+  "pdf_sha256": "78c7e9c078e5afcb9c032f55c93ebc155a5eadbfbe49fe33020ead1727b9665c"
 }

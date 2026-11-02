@@ -1,6 +1,6 @@
 {
   "date": "2026-11-02",
-  "status": "sending_document",
+  "status": "published",
   "claimed_at": "2026-11-02T07:31:45+00:00",
   "content_sha256": "3b1e7d129778def9e40cc0ac50e6f256a97868f5d3280af9e3a95d0918f4c003",
   "generated_at": "2026-11-02T07:30:59+00:00",
@@ -62,5 +62,8 @@
     "editorial_comment": "模型还没学会赚钱，算力账单已经先学会催款了。"
   },
   "channel": "@aiqinbaozhan",
-  "telegram_message_id": 71
+  "telegram_message_id": 71,
+  "published_at": "2026-11-02T07:31:51+00:00",
+  "telegram_document_message_id": 72,
+  "pdf_sha256": "850373a77cc28022b1ce68022a1296ab08bb44dabc3b6196694fbbd067edcd5a"
 }

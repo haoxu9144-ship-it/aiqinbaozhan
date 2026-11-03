@@ -1,6 +1,6 @@
 {
   "date": "2026-11-03",
-  "status": "sending_document",
+  "status": "published",
   "claimed_at": "2026-11-03T08:00:33+00:00",
   "content_sha256": "1a92a25e8d8f374d999ca0907d3873939ef19af1bab8cd272f5eb72a9f7a0085",
   "generated_at": "2026-11-03T07:59:54+00:00",
@@ -41,5 +41,8 @@
     "editorial_comment": "AI入口终于开始拼复购，下载量的烟花该让位给真使用了。"
   },
   "channel": "@aiqinbaozhan",
-  "telegram_message_id": 73
+  "telegram_message_id": 73,
+  "published_at": "2026-11-03T08:00:38+00:00",
+  "telegram_document_message_id": 74,
+  "pdf_sha256": "b1632125a0217436d6b3a77f112aa96db18872570f4b1a8a8d3524a5c6a4fa1e"
 }

@@ -1,6 +1,6 @@
 {
   "date": "2026-11-04",
-  "status": "sending_main",
+  "status": "main_sent",
   "claimed_at": "2026-11-04T07:24:51+00:00",
   "content_sha256": "febf8ffe7cda69cd7a818f0502af5dae48b7f74e28a3fb20c165423c9567dea0",
   "generated_at": "2026-11-04T07:24:12+00:00",
@@ -40,5 +40,6 @@
     ],
     "editorial_comment": "模型榜单会变，真正难的是让调用量留下来，而不是路过打卡。"
   },
-  "channel": "@aiqinbaozhan"
+  "channel": "@aiqinbaozhan",
+  "telegram_message_id": 75
 }

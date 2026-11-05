@@ -1,6 +1,6 @@
 {
   "date": "2026-11-05",
-  "status": "sending_main",
+  "status": "main_sent",
   "claimed_at": "2026-11-05T07:50:51+00:00",
   "content_sha256": "52128928016113d2cb2c8797cf0a003ced3a8c478c1a2bf375b3231ae11c5442",
   "generated_at": "2026-11-05T07:50:15+00:00",
@@ -61,5 +61,6 @@
     ],
     "editorial_comment": "模型开始抢镜头，Agent开始抢工位；谁掌握开发流程，谁才更接近账单。"
   },
-  "channel": "@aiqinbaozhan"
+  "channel": "@aiqinbaozhan",
+  "telegram_message_id": 77
 }

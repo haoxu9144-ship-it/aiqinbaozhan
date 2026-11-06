@@ -1,6 +1,6 @@
 {
   "date": "2026-11-06",
-  "status": "sending_main",
+  "status": "main_sent",
   "claimed_at": "2026-11-06T08:00:52+00:00",
   "content_sha256": "d58ce88b2b61c85ac0094ca3b5b4a21bf1bec5ea2cd0e5f8587a55458ec56ba7",
   "generated_at": "2026-11-06T07:59:55+00:00",
@@ -40,5 +40,6 @@
     ],
     "editorial_comment": "模型开始帮自己加速，安全团队却还在努力追赶说明书。"
   },
-  "channel": "@aiqinbaozhan"
+  "channel": "@aiqinbaozhan",
+  "telegram_message_id": 79
 }

@@ -1,6 +1,6 @@
 {
   "date": "2026-11-08",
-  "status": "sending_document",
+  "status": "published",
   "claimed_at": "2026-11-08T07:31:15+00:00",
   "content_sha256": "eb408365f8a47c6609300f1495308b76ca13d4711783dbcc1151fa1ea1b51303",
   "generated_at": "2026-11-08T07:30:06+00:00",
@@ -62,5 +62,8 @@
     "editorial_comment": "IPO还没敲钟，算力账单先把聚光灯调到最大。"
   },
   "channel": "@aiqinbaozhan",
-  "telegram_message_id": 81
+  "telegram_message_id": 81,
+  "published_at": "2026-11-08T07:31:20+00:00",
+  "telegram_document_message_id": 82,
+  "pdf_sha256": "139bf7f78a352ab9e07e12b0027e5d50b9908bfadf3d6e489d40ea4e2d5c4be6"
 }

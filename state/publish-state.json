@@ -1,6 +1,6 @@
 {
   "date": "2026-11-09",
-  "status": "sending_document",
+  "status": "published",
   "claimed_at": "2026-11-09T07:50:23+00:00",
   "content_sha256": "a923a4b782ed0a707c47f0b5a806d0d3e63c67571a2a57c72e4b97e05487fe45",
   "generated_at": "2026-11-09T07:49:12+00:00",
@@ -41,5 +41,8 @@
     "editorial_comment": "芯片越接近国家命门，董事会就越像安全指挥部，GPU之外还得防情报。"
   },
   "channel": "@aiqinbaozhan",
-  "telegram_message_id": 83
+  "telegram_message_id": 83,
+  "published_at": "2026-11-09T07:50:28+00:00",
+  "telegram_document_message_id": 84,
+  "pdf_sha256": "e46c17f39bce0c830258b2493edc4879e7335f3d2fd5bb932c8627d506054ae5"
 }

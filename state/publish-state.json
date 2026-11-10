@@ -1,6 +1,6 @@
 {
   "date": "2026-11-10",
-  "status": "sending_document",
+  "status": "published",
   "claimed_at": "2026-11-10T08:11:25+00:00",
   "content_sha256": "35f70294f891a5fca16972e539fa167992ebc8a3f04dfa677416a0e3c6d9e304",
   "generated_at": "2026-11-10T08:10:43+00:00",
@@ -41,5 +41,8 @@
     "editorial_comment": "AI故事还在涨，算力账单先学会了看选举。"
   },
   "channel": "@aiqinbaozhan",
-  "telegram_message_id": 85
+  "telegram_message_id": 85,
+  "published_at": "2026-11-10T08:11:32+00:00",
+  "telegram_document_message_id": 86,
+  "pdf_sha256": "5c466ca856c6c7adc72244cf5e51f90e719dcb34d02a6b0daa1f226dd97a8484"
 }

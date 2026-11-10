@@ -1,6 +1,6 @@
 {
   "date": "2026-11-10",
-  "status": "main_sent",
+  "status": "sending_document",
   "claimed_at": "2026-11-10T08:11:25+00:00",
   "content_sha256": "35f70294f891a5fca16972e539fa167992ebc8a3f04dfa677416a0e3c6d9e304",
   "generated_at": "2026-11-10T08:10:43+00:00",

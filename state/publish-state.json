@@ -1,6 +1,6 @@
 {
   "date": "2026-11-11",
-  "status": "sending_document",
+  "status": "published",
   "claimed_at": "2026-11-11T07:39:30+00:00",
   "content_sha256": "b7db0a08042ca1129e31e2155d17fde44563fb2ac3f1edc5fdcf9479716036e4",
   "generated_at": "2026-11-11T07:38:39+00:00",
@@ -83,5 +83,8 @@
     "editorial_comment": "模型还在比谁更聪明，资本市场已经先问：谁能把聪明变成现金流。"
   },
   "channel": "@aiqinbaozhan",
-  "telegram_message_id": 87
+  "telegram_message_id": 87,
+  "published_at": "2026-11-11T07:39:36+00:00",
+  "telegram_document_message_id": 88,
+  "pdf_sha256": "d01466f3713b15b0a6fb3bfedfb4dc7d79cf1d621171a8d1be26fc01706a70e1"
 }

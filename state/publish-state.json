@@ -1,6 +1,6 @@
 {
   "date": "2026-11-13",
-  "status": "sending_main",
+  "status": "main_sent",
   "claimed_at": "2026-11-13T07:44:24+00:00",
   "content_sha256": "3a8531d421fb3ded797d683b007df862f686758c8d7426b7fa2d72174d0c9435",
   "generated_at": "2026-11-13T07:43:36+00:00",
@@ -82,5 +82,6 @@
     ],
     "editorial_comment": "模型还在比参数，行业已经先比谁能把风险、算力和账单一起管住。"
   },
-  "channel": "@aiqinbaozhan"
+  "channel": "@aiqinbaozhan",
+  "telegram_message_id": 91
 }

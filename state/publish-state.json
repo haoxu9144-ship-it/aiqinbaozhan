@@ -1,6 +1,6 @@
 {
   "date": "2026-11-14",
-  "status": "sending_main",
+  "status": "main_sent",
   "claimed_at": "2026-11-14T07:30:18+00:00",
   "content_sha256": "83666392cf3162ba9110b8c9f0bba979fe01fc7b4f46bd19c660cdb077a62778",
   "generated_at": "2026-11-14T07:29:45+00:00",
@@ -61,5 +61,6 @@
     ],
     "editorial_comment": "模型还在卷智商，基础设施已经先教大家什么叫情商。"
   },
-  "channel": "@aiqinbaozhan"
+  "channel": "@aiqinbaozhan",
+  "telegram_message_id": 93
 }

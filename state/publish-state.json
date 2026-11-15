@@ -1,6 +1,6 @@
 {
   "date": "2026-11-15",
-  "status": "sending_document",
+  "status": "published",
   "claimed_at": "2026-11-15T07:43:26+00:00",
   "content_sha256": "efad457a99f3a0d9bfd3a757aeafbdf9ab5c42fbaac4be891471bba7d2f42b8e",
   "generated_at": "2026-11-15T07:42:58+00:00",
@@ -37,5 +37,8 @@
     "editorial_comment": "AI会写邮件，但邮件系统一趴窝，智能也得先学会等通知。"
   },
   "channel": "@aiqinbaozhan",
-  "telegram_message_id": 95
+  "telegram_message_id": 95,
+  "published_at": "2026-11-15T07:43:31+00:00",
+  "telegram_document_message_id": 96,
+  "pdf_sha256": "d8fafa6213115c6601c0be5c66ab4fa559af3dae835fdff1fdd0d8e6429cd156"
 }

@@ -1,6 +1,6 @@
 {
   "date": "2026-11-16",
-  "status": "sending_document",
+  "status": "published",
   "claimed_at": "2026-11-16T07:49:54+00:00",
   "content_sha256": "38df13b86a8323daddacd4aaf4db5f4977e4b02185cdccc9454e20863c8d5704",
   "generated_at": "2026-11-16T07:49:24+00:00",
@@ -62,5 +62,8 @@
     "editorial_comment": "模型还在狂奔，资本市场先踩了刹车；真正能跑起来的，得是业务不是估值。"
   },
   "channel": "@aiqinbaozhan",
-  "telegram_message_id": 97
+  "telegram_message_id": 97,
+  "published_at": "2026-11-16T07:50:01+00:00",
+  "telegram_document_message_id": 98,
+  "pdf_sha256": "ddd5e8cdb846a6f823ec8e6435efa5a76fcfc2778281b127d9638e2a8fe62004"
 }

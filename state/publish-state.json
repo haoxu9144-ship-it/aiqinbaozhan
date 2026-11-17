@@ -1,6 +1,6 @@
 {
   "date": "2026-11-17",
-  "status": "sending_document",
+  "status": "published",
   "claimed_at": "2026-11-17T08:58:16+00:00",
   "content_sha256": "7d7453f219e0107dcaab094611dc489373e89dec5061e30d393e3dfeef4670ea",
   "generated_at": "2026-11-17T08:57:38+00:00",
@@ -62,5 +62,8 @@
     "editorial_comment": "模型想放手干活，监管先把它的手册没收了。"
   },
   "channel": "@aiqinbaozhan",
-  "telegram_message_id": 99
+  "telegram_message_id": 99,
+  "published_at": "2026-11-17T08:58:23+00:00",
+  "telegram_document_message_id": 100,
+  "pdf_sha256": "49b7c7ddbf6627ccfdf054ec361402434969b4f948660cdd4cd12963a4ee4c8b"
 }

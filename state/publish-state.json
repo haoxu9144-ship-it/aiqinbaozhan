@@ -1,6 +1,6 @@
 {
   "date": "2026-11-18",
-  "status": "sending_document",
+  "status": "published",
   "claimed_at": "2026-11-18T08:26:57+00:00",
   "content_sha256": "96350cd18045fa6cb54477bca05acfa2928ed43e5a17b529203df2543c1da1b7",
   "generated_at": "2026-11-18T08:26:17+00:00",
@@ -41,5 +41,8 @@
     "editorial_comment": "模型还在卷参数，算力江湖先开始卷掌门人；真正的变量仍是芯片能不能稳定到货。"
   },
   "channel": "@aiqinbaozhan",
-  "telegram_message_id": 101
+  "telegram_message_id": 101,
+  "published_at": "2026-11-18T08:27:04+00:00",
+  "telegram_document_message_id": 102,
+  "pdf_sha256": "7163c33309456a530146e915a8143ab1cdaaaa0de9d6d4b4e4b3b71236170e87"
 }

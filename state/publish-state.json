@@ -1,6 +1,6 @@
 {
   "date": "2026-11-19",
-  "status": "sending_document",
+  "status": "published",
   "claimed_at": "2026-11-19T08:35:22+00:00",
   "content_sha256": "f58aa30bc4ea48f63ab4b77933cf88073e0698ef586e57eca39dc377b8a78c4b",
   "generated_at": "2026-11-19T08:34:47+00:00",
@@ -62,5 +62,8 @@
     "editorial_comment": "模型要上市，先得学会通过监管这场真人评测。"
   },
   "channel": "@aiqinbaozhan",
-  "telegram_message_id": 103
+  "telegram_message_id": 103,
+  "published_at": "2026-11-19T08:35:28+00:00",
+  "telegram_document_message_id": 104,
+  "pdf_sha256": "aef0f9e03f5185a3e59c990c8aa9177abca6021571becad075572feedfa4effb"
 }

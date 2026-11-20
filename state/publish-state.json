@@ -1,6 +1,6 @@
 {
   "date": "2026-11-20",
-  "status": "sending_main",
+  "status": "main_sent",
   "claimed_at": "2026-11-20T08:17:41+00:00",
   "content_sha256": "05545a2b61269cc290079bbd2dec8d26b0e824aeed35a1685f780067777d840a",
   "generated_at": "2026-11-20T08:17:05+00:00",
@@ -61,5 +61,6 @@
     ],
     "editorial_comment": "模型公司一边谈安全，一边把资本市场的油门踩到底，真正的刹车还得看算力和监管。"
   },
-  "channel": "@aiqinbaozhan"
+  "channel": "@aiqinbaozhan",
+  "telegram_message_id": 105
 }

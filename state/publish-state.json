@@ -1,6 +1,6 @@
 {
   "date": "2026-11-21",
-  "status": "sending_document",
+  "status": "published",
   "claimed_at": "2026-11-21T08:10:04+00:00",
   "content_sha256": "f0908bb4c2b9aaf9aed10c79a7a659c48ac8ff090cace624dda6d64b7200e5e0",
   "generated_at": "2026-11-21T08:09:22+00:00",
@@ -63,5 +63,8 @@
     "editorial_comment": "模型开始抢数学头条，算力许可却提醒大家：现实仍要看门票。"
   },
   "channel": "@aiqinbaozhan",
-  "telegram_message_id": 107
+  "telegram_message_id": 107,
+  "published_at": "2026-11-21T08:10:09+00:00",
+  "telegram_document_message_id": 108,
+  "pdf_sha256": "0c64344a31754a56995aa2e760fc52b7cb9674d6f397ef15240c63591c604274"
 }

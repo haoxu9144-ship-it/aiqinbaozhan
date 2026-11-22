@@ -1,6 +1,6 @@
 {
   "date": "2026-11-22",
-  "status": "sending_main",
+  "status": "main_sent",
   "claimed_at": "2026-11-22T08:13:12+00:00",
   "content_sha256": "50639b029dcc992ba9d0e1abdff1deba3b455500280b898d0778476f8b4ba9b2",
   "generated_at": "2026-11-22T08:12:36+00:00",
@@ -40,5 +40,6 @@
     ],
     "editorial_comment": "模型还在加速，估值先踩了刹车；资本市场不吃永动机叙事。"
   },
-  "channel": "@aiqinbaozhan"
+  "channel": "@aiqinbaozhan",
+  "telegram_message_id": 109
 }

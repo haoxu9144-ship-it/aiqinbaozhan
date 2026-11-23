@@ -1,6 +1,6 @@
 {
   "date": "2026-11-23",
-  "status": "sending_main",
+  "status": "main_sent",
   "claimed_at": "2026-11-23T08:49:49+00:00",
   "content_sha256": "0cec5603fb7b4d570bc953e63dca41c10ee8d887fcd673e10a67a93017e17ddf",
   "generated_at": "2026-11-23T08:49:24+00:00",
@@ -38,5 +38,6 @@
     ],
     "editorial_comment": "AI公司刚学会上市，市场先教它们学会波动。"
   },
-  "channel": "@aiqinbaozhan"
+  "channel": "@aiqinbaozhan",
+  "telegram_message_id": 111
 }

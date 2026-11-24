@@ -1,6 +1,6 @@
 {
   "date": "2026-11-24",
-  "status": "sending_document",
+  "status": "published",
   "claimed_at": "2026-11-24T10:47:53+00:00",
   "content_sha256": "5c62da6eb3f4a439b509ff4d0b775a388a5ca5148bb5a5a407c1f616c08fc560",
   "generated_at": "2026-11-24T10:46:57+00:00",
@@ -83,5 +83,8 @@
     "editorial_comment": "模型都在学会做事，真正稀缺的仍是把结果接进业务的耐心。"
   },
   "channel": "@aiqinbaozhan",
-  "telegram_message_id": 113
+  "telegram_message_id": 113,
+  "published_at": "2026-11-24T10:47:58+00:00",
+  "telegram_document_message_id": 114,
+  "pdf_sha256": "01ade1df8f31cc95bd8a9d1b061824d3d81d77592c5cf5dd6420f85b332b286c"
 }

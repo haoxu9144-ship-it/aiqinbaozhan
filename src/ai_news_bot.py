@@ -20,7 +20,7 @@ from typing import Any
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from deep_report import enrich_schema, editorial_prompt, validate_editorial, brief_post, build_pdf
+from deep_report import enrich_schema, editorial_prompt, validate_editorial, brief_post, build_pdf, public_text
 
 
 CHINA_TZ = timezone(timedelta(hours=8), name="Asia/Shanghai")
@@ -494,7 +494,7 @@ def legacy_format_post(digest: dict[str, Any], now: datetime) -> str:
                 f"{index}. {clean_text(item['headline'])}",
                 f"发生了什么：{clean_text(item['what_happened'])}",
                 f"为什么重要：{clean_text(item['why_important'])}",
-                f"来源：{clean_text(item['source_name'])} {item['source_url'].strip()}",
+                f"来源：{public_text(item['source_name'])}",
                 "",
             ]
         )
@@ -506,7 +506,7 @@ def legacy_format_post(digest: dict[str, Any], now: datetime) -> str:
             f"关注理由：{clean_text(watch['reason'])}",
         ]
     )
-    post = "\n".join(lines).strip()
+    post = public_text("\n".join(lines))
     length = utf16_length(post)
     if length > TELEGRAM_TEXT_LIMIT:
         raise AppError(f"生成帖子长度为 {length}，超过 Telegram 的 {TELEGRAM_TEXT_LIMIT} 字限制。")
@@ -571,6 +571,9 @@ class GitHubStateStore:
 
 
 def publish_to_telegram(token: str, channel: str, post: str) -> int:
+    post = public_text(post)
+    if not post.strip() or utf16_length(post) > TELEGRAM_TEXT_LIMIT:
+        raise AppError("公开主帖为空或超过Telegram长度限制，停止发送。")
     url = f"https://api.telegram.org/bot{token}/sendMessage"
     body = {
         "chat_id": channel,
@@ -607,7 +610,7 @@ class TelegramRejectedError(AppError):
 
 def publish_document(token: str, channel: str, path: Path, main_id: int, date_key: str) -> int:
     boundary = "AIReport" + uuid.uuid4().hex
-    fields = {"chat_id": channel, "caption": f"📖 AI情报站｜{date_key} 全球 AI 深度情报\n上方精简主帖的完整版：背景、影响、创业机会与可靠来源。",
+    fields = {"chat_id": channel, "caption": f"📖 AI情报站｜{date_key} 全球 AI 深度情报\n上方日报主帖的完整版：背景、影响、创业机会与来源记录。",
               "reply_parameters": json.dumps({"message_id": main_id, "allow_sending_without_reply": False})}
     chunks = []
     for name, value in fields.items():

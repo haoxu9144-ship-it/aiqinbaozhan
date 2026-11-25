@@ -75,15 +75,16 @@ class ConfigTests(unittest.TestCase):
 
 
 class ValidationTests(unittest.TestCase):
-    def test_editorial_comment_appears_once_before_takeaways(self):
+    def test_editorial_comment_appears_once_before_watch(self):
         digest = sample_digest()
         bot.validate_digest(digest, NOW)
         post = bot.format_post(digest, NOW)
         self.assertEqual(post.count("😏 情报站锐评"), 1)
         self.assertEqual(post.count(digest["editorial_comment"]), 1)
-        self.assertLess(post.index("💡 赚钱 / 创业机会"), post.index("😏 情报站锐评"))
-        self.assertLess(post.index("😏 情报站锐评"), post.index("📌 今天只记住这 3 件事"))
-        self.assertLessEqual(bot.utf16_length(post), 1100)
+        self.assertLess(post.index("💡 商业与创业"), post.index("😏 情报站锐评"))
+        self.assertLess(post.index("😏 情报站锐评"), post.index("接下来盯什么"))
+        self.assertNotIn("今天只记住这", post)
+        self.assertLessEqual(bot.utf16_length(post), 3500)
 
     def test_editorial_comment_length_boundaries(self):
         for length in (15, 45, 60):
@@ -118,8 +119,8 @@ class ValidationTests(unittest.TestCase):
         bot.validate_digest(digest, NOW)
         post = bot.format_post(digest, NOW)
         self.assertTrue(post.startswith("🔥 今日 AI 情报｜2026年9月2日"))
-        self.assertIn("⚡ 今天一句话", post)
-        self.assertIn("📌 今天只记住这 3 件事", post)
+        self.assertIn(digest["trend"], post)
+        self.assertIn("接下来盯什么", post)
         self.assertNotIn("发生了什么：", post)
         self.assertLessEqual(bot.utf16_length(post), 4096)
 
@@ -451,6 +452,81 @@ class EditorialTests(unittest.TestCase):
         self.assertEqual(schema["properties"]["editorial_comment"], {"type": "string"})
         self.assertNotIn("editorial_comment", schema["properties"]["items"]["items"]["properties"])
         self.assertIn("china_impact", schema["properties"]["items"]["items"]["required"])
+
+
+class PublicFormatTests(unittest.TestCase):
+    def test_long_post_contains_facts_and_impact_without_repeating_summary(self):
+        digest = sample_digest()
+        for item in digest["items"]:
+            item["what_happened"] = "【离线样例】事件细节和已确认范围。" * 9
+            item["why_important"] = "【离线样例】说明影响和实际限制。" * 7
+        post = bot.format_post(digest, NOW)
+        self.assertGreater(bot.utf16_length(post), 1100)
+        self.assertLessEqual(bot.utf16_length(post), 3500)
+        for item in digest["items"]:
+            self.assertIn(item["what_happened"], post)
+            self.assertIn(item["why_important"], post)
+        self.assertNotIn(digest["items"][0]["takeaway"], post)
+        self.assertNotIn(digest["takeaways"][0], post)
+
+    def test_oversized_post_fails_without_truncating_facts(self):
+        digest = sample_digest()
+        digest["items"][0]["what_happened"] = "长" * 3600
+        with self.assertRaisesRegex(bot.AppError, "3500"):
+            bot.format_post(digest, NOW)
+
+    def test_link_removal_preserves_labels_versions_and_internal_sources(self):
+        cases = [
+            ("[官方说明](https://example.com/a)", "官方说明"),
+            ('<a href="https://example.com">官方说明</a>', "官方说明"),
+            ("更新见https://example.com/a。继续核验。", "更新见。继续核验。"),
+            ("来源 www.example.com/a", "来源"),
+            ("来源 example.com/a", "来源"),
+            ("详情见example.com，结果以公告为准。", "详情见，结果以公告为准。"),
+            ("来源 example\uff0ecom/a", "来源"),
+            ("来源 https://exa\u200bmple.com/a", "来源"),
+            ("联系 mailto:test@example.com", "联系"),
+            ("参考 <https://example.com>", "参考"),
+            ("入口 127.0.0.1:8000/a", "入口"),
+            ("Qwen3.5 与 GPT-5.6，速度提升 12.5%。", "Qwen3.5 与 GPT-5.6，速度提升 12.5%。"),
+            ("延迟 <20ms，吞吐 >30 token/s。", "延迟 <20ms，吞吐 >30 token/s。"),
+            ("llama.cpp、Transformers.js 与 Node.js。", "llama.cpp、Transformers.js 与 Node.js。"),
+            ("Node.js 详情 https://nodejs.org，llama.cpp 来源 example.com。", "Node.js 详情 ，llama.cpp 来源 。"),
+        ]
+        for value, expected in cases:
+            with self.subTest(value=value):
+                self.assertEqual(bot.public_text(value), expected)
+        digest = sample_digest()
+        original_url = digest["items"][0]["source_url"]
+        digest["items"][0]["what_happened"] += " https://example.com/a"
+        digest["trend"] += " www.example.com"
+        digest["watch"]["reason"] += " example.org/a"
+        for formatter in (bot.format_post, bot.legacy_format_post):
+            post = formatter(digest, NOW)
+            self.assertNotIn("example", post)
+            self.assertNotIn("http", post)
+        self.assertEqual(digest["items"][0]["source_url"], original_url)
+
+    def test_send_boundary_removes_links_even_for_alternate_callers(self):
+        reply = MagicMock()
+        reply.__enter__.return_value.read.return_value = b'{"ok":true,"result":{"message_id":1}}'
+        with patch.object(bot, "telegram_send_request", return_value=reply) as send:
+            bot.publish_to_telegram("token", "@channel", "事件说明 https://example.com/a")
+        payload = json.loads(send.call_args.args[0].data)
+        self.assertEqual(payload["text"], "事件说明")
+
+    def test_pdf_retains_source_names_without_urls_or_link_annotations(self):
+        from reportlab.platypus import Paragraph
+        digest = sample_digest()
+        digest["items"][0]["background"] += " https://example.com/a"
+        with tempfile.TemporaryDirectory() as folder, patch("reportlab.platypus.Paragraph", wraps=Paragraph) as paragraph:
+            path = bot.build_pdf(digest, NOW.astimezone(bot.CHINA_TZ), Path(folder) / "test.pdf")
+            rendered = "\n".join(call.args[0] for call in paragraph.call_args_list)
+            self.assertIn("官方来源", rendered)
+            self.assertIn("发布时间", rendered)
+            self.assertNotIn("example.com", rendered)
+            self.assertNotIn("<link", rendered)
+            self.assertNotIn(b"/URI", path.read_bytes())
 
 
 class RedactionTests(unittest.TestCase):

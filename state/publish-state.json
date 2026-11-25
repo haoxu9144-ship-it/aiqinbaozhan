@@ -1,6 +1,6 @@
 {
   "date": "2026-11-25",
-  "status": "sending_main",
+  "status": "main_sent",
   "claimed_at": "2026-11-25T09:43:14+00:00",
   "content_sha256": "977f9e5895dd474c10d1a4dffc93f21657a264d5bfcdfa74ca0b5e98c6f8eb5e",
   "generated_at": "2026-11-25T09:42:47+00:00",
@@ -40,5 +40,6 @@
     ],
     "editorial_comment": "AI故事还在继续，但投资人开始要求它顺手把账单也讲清楚。"
   },
-  "channel": "@aiqinbaozhan"
+  "channel": "@aiqinbaozhan",
+  "telegram_message_id": 115
 }

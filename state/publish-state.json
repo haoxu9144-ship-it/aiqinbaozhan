@@ -1,90 +1,44 @@
 {
-  "date": "2026-11-24",
-  "status": "published",
-  "claimed_at": "2026-11-24T10:47:53+00:00",
-  "content_sha256": "5c62da6eb3f4a439b509ff4d0b775a388a5ca5148bb5a5a407c1f616c08fc560",
-  "generated_at": "2026-11-24T10:46:57+00:00",
+  "date": "2026-11-25",
+  "status": "sending_main",
+  "claimed_at": "2026-11-25T09:43:14+00:00",
+  "content_sha256": "977f9e5895dd474c10d1a4dffc93f21657a264d5bfcdfa74ca0b5e98c6f8eb5e",
+  "generated_at": "2026-11-25T09:42:47+00:00",
   "digest": {
     "items": [
       {
-        "headline": "智谱发布GLM-5.4旗舰模型",
-        "what_happened": "智谱旗下Z.ai于11月23日发布GLM-5.4，采用首代Loop Transformer架构，将GLM-5基础模型的28层循环执行两轮，重点面向长程编码、网络安全、3D建模和工程任务。",
-        "why_important": "这不是单纯堆参数，而是通过共享权重增加计算深度，试图以更高推理效率覆盖复杂Agent工作流。官方称其能力可对标2T至3T参数级模型，但仍需独立评测验证。",
-        "published_at": "2026-11-23T12:00:00+00:00",
-        "source_name": "Z.ai官方博客",
-        "source_url": "https://z.ai/blog/glm-5.4",
-        "takeaway": "GLM-5.4把模型竞争推进到循环深度与长程编码。",
-        "background": "此前大模型主要依靠扩大参数规模、训练数据和推理算力提升能力。Z.ai此次选择在既有GLM-5基础上复用部分层结构，通过循环计算增加有效深度，并配合稀疏注意力、混合KV缓存等设计控制部署成本。",
-        "china_impact": "GLM-5.4已面向GLM Coding Plan用户开放，官方文档显示支持1M上下文和三档思考强度。中国开发者可直接用于编码与Agent试验，但API正式开放时间、国内企业部署条件和合规边界仍需继续确认。",
-        "entrepreneur_impact": "它可能降低复杂编码、软件测试、3D设计和工程自动化的试用门槛，催生围绕代码Agent、行业插件和本地工作流的集成机会。限制是模型默认高强度思考可能增加等待与Token消耗，商业稳定性尚待观察。",
-        "attention_reason": "值得关注，因为国内模型开始把架构创新直接绑定到可执行的软件工程任务，而非只展示通用榜单。下一步应核验开放权重计划、API价格、第三方基准成绩及长任务实际成功率。",
-        "region": "domestic",
-        "category": "news",
-        "key_updates": [
-          "Loop Transformer循环28层基础模块两轮",
-          "官方称能力可对标2T至3T参数级模型",
-          "支持1M上下文与三档思考强度"
-        ],
-        "in_brief": true
-      },
-      {
-        "headline": "OpenAI将GPT-6.2带入ChatGPT对话页",
-        "what_happened": "OpenAI于11月23日开始向ChatGPT Plus、Pro、Business和Enterprise用户全球推送GPT-6.2对话版本，重点提升复杂指令遵循、图像理解、网页检索和多轮追问能力，Work与Codex模型暂未同步变化。",
-        "why_important": "这是GPT-6.2从工作与编程场景进入日常对话入口，意味着模型升级开始同时影响普通用户体验、搜索式问答和消费端Agent交互。企业可用性仍受管理员设置与地区开放节奏影响。",
-        "published_at": "2026-11-23T12:00:00+00:00",
-        "source_name": "OpenAI帮助中心",
-        "source_url": "https://help.openai.com/am-et/articles/6825453-chatgpt-release-notes",
-        "takeaway": "GPT-6.2先强化ChatGPT日常对话，而非全面替换工作模型。",
-        "background": "OpenAI此前已于11月17日把GPT-6.2 Astra和Sol放入ChatGPT Work、Codex和API。此次更新单独面向ChatGPT聊天页，采用针对日常交流调优的GPT-6.2 Sol版本，并继续分层提供工作、编程和普通对话模型。",
-        "china_impact": "中国用户能否使用取决于ChatGPT服务覆盖、账号类型和地区可用性，官方页面未提供中国大陆开放安排。若未来扩大覆盖，复杂中文指令、图片问答和网页检索能力可能提升，但数据跨境、支付与企业合规仍是现实限制。",
-        "entrepreneur_impact": "更强的指令遵循和追问能力可能推动客服、研究助理、销售资料整理和个人效率产品升级。创业团队仍需验证实际调用成本、地区可达性、输出稳定性与版权责任，不能只依据官方内部评测判断商业价值。",
-        "attention_reason": "值得关注，因为ChatGPT主入口的模型升级通常会改变用户默认预期和第三方产品竞争基线。下一步应核验不同套餐的真实开放比例、中文任务表现、API与Chat版本差异，以及Work和Codex何时同步。",
+        "headline": "AI股回撤拖累亚洲科技板块",
+        "what_happened": "美联社11月25日04:05 UTC报道，亚洲股市普遍走低，前一交易日华尔街AI相关股票回撤后，AI投资链出现同步下跌。软银集团股价下挫14.8%，芯片厂商铠侠跌14.2%，Anthropic跌6.5%，股价跌破83美元。",
+        "why_important": "这不是单一公司的产品事故，而是市场开始重新审视AI高估值、算力投入和盈利兑现速度。对模型公司、芯片供应商及持有相关资产的投资者，融资条件和估值波动可能先于业务基本面变化。",
+        "published_at": "2026-11-25T04:05:26+00:00",
+        "source_name": "美联社",
+        "source_url": "https://apnews.com/article/10044b4fb55d3ff20fde9ba9e9acaab1",
+        "takeaway": "AI估值波动已传导至亚洲科技股，算力与模型资产同步承压。",
+        "background": "过去数年，AI模型公司、芯片厂商和基础设施投资者形成高度关联的资本链条。股价变化通常同时反映模型商业化预期、数据中心资本开支、芯片需求和利率环境，单日回撤不能直接等同于行业需求下降。",
+        "china_impact": "中国用户不会因这次海外股价波动立即失去模型服务，但海外模型、芯片和云服务的融资与供应预期可能受影响。对国内厂商而言，国产算力和模型替代的相对吸引力可能上升，但实际成本变化尚未确认。",
+        "entrepreneur_impact": "创业公司更需要关注现金流、推理成本和单客户收入，而不是只追逐高估值叙事。低成本模型路由、算力利用率优化和明确付费场景可能更受投资人重视，但融资环境是否持续收紧仍需观察。",
+        "attention_reason": "值得关注，因为跌幅同时涉及投资平台、芯片供应商和模型公司。下一步应核验美国大型AI公司的业绩指引、数据中心资本开支及模型收入增速，判断这是短期情绪回撤还是估值逻辑变化。",
         "region": "global",
-        "category": "news",
+        "category": "business",
         "key_updates": [
-          "GPT-6.2开始全球推送至四类付费套餐",
-          "图像理解内部测试得分从47.4%升至71.7%",
-          "复杂指令遵循率从62.5%升至78.1%"
-        ],
-        "in_brief": true
-      },
-      {
-        "headline": "Google用Agent优化量子算法",
-        "what_happened": "Google DeepMind与Google Quantum AI发布研究，使用多组Gemini 4 Agent协作改进量子算法，并以Lean形式化证明验证结果。团队报告称，聚变模拟计算成本降低11.8倍，部分分子模拟成本降低8倍。",
-        "why_important": "这展示了Agent从文字和代码任务走向科学发现：模型负责提出算法改进，人类设定问题边界，形式化验证负责筛除错误。若结果可复现，Agent可能成为科研计算的搜索与验证层。",
-        "published_at": "2026-11-23T12:00:00+00:00",
-        "source_name": "Google DeepMind",
-        "source_url": "https://deepmind.google/blog/finding-faster-quantum-algorithms-with-agents-and-formal-verification/",
-        "takeaway": "Gemini Agent的价值开始从写代码转向搜索并验证科研算法。",
-        "background": "量子算法常受量子比特数量、操作次数和内存需求限制，许多理论方案无法直接在早期容错量子计算机上运行。Google此次让多个Agent并行探索改进，再把候选结果交由Lean定理证明器进行数学验证。",
-        "china_impact": "中国科研用户可借鉴这种‘Agent提出方案、形式化工具验算’的流程，但具体Gemini 4服务、代码库和量子计算资源的可用性受地区、平台和许可限制。研究价值可以参考，直接复现条件尚未确认。",
-        "entrepreneur_impact": "潜在机会集中在科研Agent、形式化验证、实验设计和行业知识库，而不是简单套用聊天机器人。创业团队需要具备算法、软件工程和科研流程能力，并证明Agent结果能被稳定复核，短期不宜把论文指标直接等同于产品收入。",
-        "attention_reason": "值得关注，因为它把Agent的核心竞争从‘生成答案’推进到‘生成候选方案并提供可验证证明’。下一步应核验论文细节、开源Lean库的可复现性，以及这些优化在真实量子硬件和完整科研流程中的收益。",
-        "region": "global",
-        "category": "tool",
-        "key_updates": [
-          "聚变相关量子电路计算成本降低11.8倍",
-          "所需纠错量子比特从5650降至4338",
-          "部分光敏分子模拟成本降低8倍"
+          "软银集团股价下跌14.8%。",
+          "铠侠股价下跌14.2%。",
+          "Anthropic股价下跌6.5%，跌破83美元。"
         ],
         "in_brief": true
       }
     ],
     "watch": {
-      "thing": "GLM-5.4开放权重、API价格与第三方独立评测",
-      "reason": "这将决定其架构创新能否转化为可部署、可比较、可商业化的开发者产品。"
+      "thing": "继续看AI龙头及芯片公司的业绩指引和资本开支，判断市场回撤能否扩散到业务预期。",
+      "reason": "若收入增速和算力投入同时放缓，估值压力可能从股票市场传导至融资与采购。"
     },
-    "trend": "模型升级正从参数竞赛转向长程Agent、科学验证与真实工作流落地。",
+    "trend": "AI资本链出现同步降温迹象，市场开始把估值重新交给收入和算力效率检验。",
     "takeaways": [
-      "智谱用循环架构押注更深推理与复杂编码。",
-      "OpenAI把GPT-6.2先推入日常ChatGPT入口。",
-      "Google让Agent参与科研算法并接受形式化验证。"
+      "AI股回撤已波及亚洲科技板块。",
+      "软银、铠侠与Anthropic跌幅明显。",
+      "后续关键在收入与资本开支指引。"
     ],
-    "editorial_comment": "模型都在学会做事，真正稀缺的仍是把结果接进业务的耐心。"
+    "editorial_comment": "AI故事还在继续，但投资人开始要求它顺手把账单也讲清楚。"
   },
-  "channel": "@aiqinbaozhan",
-  "telegram_message_id": 113,
-  "published_at": "2026-11-24T10:47:58+00:00",
-  "telegram_document_message_id": 114,
-  "pdf_sha256": "01ade1df8f31cc95bd8a9d1b061824d3d81d77592c5cf5dd6420f85b332b286c"
+  "channel": "@aiqinbaozhan"
 }

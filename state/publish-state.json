@@ -1,6 +1,6 @@
 {
   "date": "2026-11-26",
-  "status": "sending_document",
+  "status": "published",
   "claimed_at": "2026-11-26T09:18:53+00:00",
   "content_sha256": "e55cdd13a0bf484035312eef57dc70b296f3519e75dd0154be0dc3981c4ac311",
   "generated_at": "2026-11-26T09:18:24+00:00",
@@ -62,5 +62,8 @@
     "editorial_comment": "模型还没学会自控，监管和资本市场已经先替它踩刹车了。"
   },
   "channel": "@aiqinbaozhan",
-  "telegram_message_id": 117
+  "telegram_message_id": 117,
+  "published_at": "2026-11-26T09:19:00+00:00",
+  "telegram_document_message_id": 118,
+  "pdf_sha256": "3842ca1c4a6ca2bf831f8672f1eb12be5af6c3d3d0725cabedc1550d6cc9c074"
 }

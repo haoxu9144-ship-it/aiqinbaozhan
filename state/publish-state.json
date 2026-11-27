@@ -1,6 +1,6 @@
 {
   "date": "2026-11-27",
-  "status": "sending_document",
+  "status": "published",
   "claimed_at": "2026-11-27T09:34:37+00:00",
   "content_sha256": "80997b133cd33a8aaf99e39d5a22e2700609a4dc37a53eff06ce0c977764e5e1",
   "generated_at": "2026-11-27T09:33:49+00:00",
@@ -41,5 +41,8 @@
     "editorial_comment": "模型发布也开始看供应链，参数表后面站着一整套地缘政治。"
   },
   "channel": "@aiqinbaozhan",
-  "telegram_message_id": 119
+  "telegram_message_id": 119,
+  "published_at": "2026-11-27T09:34:43+00:00",
+  "telegram_document_message_id": 120,
+  "pdf_sha256": "e20594f1710a8286046b06b9a8d8c178c531972d8f3a40557e936382500442d5"
 }

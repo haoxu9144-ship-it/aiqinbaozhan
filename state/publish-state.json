@@ -1,6 +1,6 @@
 {
   "date": "2026-11-28",
-  "status": "sending_main",
+  "status": "main_sent",
   "claimed_at": "2026-11-28T08:47:50+00:00",
   "content_sha256": "d4fba56ff9a30821401f0fab0997464c16eceb1204450069e188faa6065978db",
   "generated_at": "2026-11-28T08:47:14+00:00",
@@ -61,5 +61,6 @@
     ],
     "editorial_comment": "模型公司和芯片商都在讲边界，真正先被拿来抵押和打官司的却是那批硬件与人才。"
   },
-  "channel": "@aiqinbaozhan"
+  "channel": "@aiqinbaozhan",
+  "telegram_message_id": 121
 }
